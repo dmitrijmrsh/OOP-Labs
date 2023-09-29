@@ -13,7 +13,7 @@ TEST(test_02, basic_test_set)
 
 TEST(test_03, basic_test_set) 
 {
-    ASSERT_TRUE(gcd(12, 8)==4);
+    ASSERT_TRUE(gcd(12,8)==4);
 }
 
 TEST(test_04, basic_test_set) 
@@ -24,6 +24,16 @@ TEST(test_04, basic_test_set)
 TEST(test_05, basic_test_set)
 {
     ASSERT_TRUE(gcd(8,8)==8);
+}
+
+TEST(test_06, basic_test_set)
+{
+    ASSERT_TRUE(gcd(8,0)==8);
+}
+
+TEST(test_07, basic_test_set)
+{
+    ASSERT_TRUE(gcd(-18,-6)==6);
 }
 
 int main(int argc, char** argv) {

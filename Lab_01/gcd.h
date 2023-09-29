@@ -1,3 +1,5 @@
 #pragma once
 
-int gcd(int, int);
+int Abs(int a);
+
+int gcd(int a, int b);
