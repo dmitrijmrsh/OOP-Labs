@@ -2,13 +2,10 @@
 #include "Hex.hpp"
 
 int main() {
-    std::string a = "";
-    std::string b = "123";
-    if (b < a) {
-        std::cout << "YES\n";
-    } else {
-        std::cout << "NO\n";
-    }
+    Hex a{};
+    Hex b("12345");
+    a -= b;
+    std::cout << a.getvalue() << std::endl;
 
     return 0;
 }
