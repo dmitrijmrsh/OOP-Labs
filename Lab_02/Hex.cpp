@@ -145,10 +145,6 @@ size_t Hex::HexToDecimal() {
 std::string Hex::getvalue() {
     std::string ans = "";
     size_t badzerocount = InsignificantZeroCount();
-    if ((badzerocount == size) && (size != 0)) {
-        ans = "0";
-        return ans;
-    }
     for (size_t i = 0; i < size - badzerocount; ++i) {
         ans = static_cast<char>(digits[i]) + ans;
     }
@@ -242,12 +238,7 @@ Hex& Hex::operator -= (Hex& other) {
     other.size = rightoldsize - other.InsignificantZeroCount();
 
     if (size < other.size) {
-        size = 1;
-        capacity = 2;
-        delete[] digits;
-        digits = new unsigned char[capacity];
-        digits[0] = '0';
-        return *this;
+        throw std::logic_error("The size of left value is less than size of right value");
     }
     
     if (other.size == 0) {

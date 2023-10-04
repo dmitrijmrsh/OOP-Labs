@@ -238,8 +238,7 @@ TEST(Operators, plus_4) {
 TEST(Operators, minus_equal_1) {
     Hex a{};
     Hex b("12345");
-    a -= b;
-    ASSERT_EQ(a.getvalue(), "0");
+    ASSERT_ANY_THROW(a -= b);
 }
 
 TEST(Operators, minus_equal_2) {
@@ -273,8 +272,7 @@ TEST(Operators, minus_equal_5) {
 TEST(Operators, minus_1) {
     Hex a{};
     Hex b("12345");
-    a = a - b;
-    ASSERT_EQ(a.getvalue(), "0");
+    ASSERT_ANY_THROW(a - b);
 }
 
 TEST(Operators, minus_2) {
