@@ -28,9 +28,9 @@ class Hex {
         Hex(Hex&& other) noexcept;
 
         //Дополнительные методы
-        size_t getsize();
-        size_t HexToDecimal();
-        std::string getvalue();
+        size_t getsize() const;
+        size_t HexToDecimal() const;
+        std::string getvalue() const;
 
         //Деструктор
         virtual ~Hex() noexcept;
@@ -42,15 +42,15 @@ class Hex {
         Hex& operator = (const Hex&);
         Hex& operator = (Hex&&);
         Hex& operator += (const Hex&);
-        Hex& operator -= (Hex&);
-        Hex operator + (const Hex&);
-        Hex operator - (Hex&);
+        Hex& operator -= (const Hex&);
+        Hex operator + (const Hex&) const;
+        Hex operator - (const Hex&) const;
 
         //Логические операторы
-        bool operator == (Hex&);
-        bool operator != (Hex&);
-        bool operator < (Hex&);
-        bool operator <= (Hex&);
-        bool operator > (Hex&);
-        bool operator >= (Hex&);
+        bool operator == (const Hex&) const;
+        bool operator != (const Hex&) const;
+        bool operator < (const Hex&) const;
+        bool operator <= (const Hex&) const;
+        bool operator > (const Hex&) const;
+        bool operator >= (const Hex&) const;
 };

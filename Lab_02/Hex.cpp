@@ -132,7 +132,7 @@ void Hex::reallocate(const size_t& newcapacity) {
     digits = newArray;
 }
 
-size_t Hex::getsize() {
+size_t Hex::getsize() const {
     return size;
 }
 
@@ -143,7 +143,7 @@ Hex::~Hex() noexcept {
     digits = nullptr;
 }
 
-size_t Hex::HexToDecimal() {
+size_t Hex::HexToDecimal() const {
     size_t temp = 0;
     size_t ans = 0;
     for (size_t i = 0; i < size; ++i) {
@@ -153,7 +153,7 @@ size_t Hex::HexToDecimal() {
     return ans;   
 }
 
-std::string Hex::getvalue() {
+std::string Hex::getvalue() const {
     std::string ans = "";
     for (size_t i = 0; i < size; ++i) {
         if (digits[i] != '\0')
@@ -235,13 +235,13 @@ Hex& Hex::operator += (const Hex& other) {
     return *this;
 }
 
-Hex Hex::operator + (const Hex& other) {
+Hex Hex::operator + (const Hex& other) const {
     Hex ans = *this;
     ans += other;
     return ans;
 }
 
-Hex& Hex::operator -= (Hex& other) {
+Hex& Hex::operator -= (const Hex& other) {
     if (size < other.size) {
         throw std::logic_error("The size of left value is less than size of right value");
     }
@@ -293,13 +293,13 @@ Hex& Hex::operator -= (Hex& other) {
     return *this;
 }
 
-Hex Hex::operator - (Hex& other) {
+Hex Hex::operator - (const Hex& other) const {
     Hex ans = *this;
     ans -= other;
     return ans;
 }
 
-bool Hex::operator == (Hex& other) {
+bool Hex::operator == (const Hex& other) const {
     size_t left = HexToDecimal();
     size_t right = other.HexToDecimal();
     if (left == right) {
@@ -308,11 +308,11 @@ bool Hex::operator == (Hex& other) {
     return false;
 }
 
-bool Hex::operator != (Hex& other) {
+bool Hex::operator != (const Hex& other) const {
     return !(*this == other);
 }
 
-bool Hex::operator < (Hex& other) {
+bool Hex::operator < (const Hex& other) const {
     size_t left = HexToDecimal();
     size_t right = other.HexToDecimal();
 
@@ -323,14 +323,14 @@ bool Hex::operator < (Hex& other) {
     return false;
 }
 
-bool Hex::operator >= (Hex& other) {
+bool Hex::operator >= (const Hex& other) const {
     return !(*this < other);
 }
 
-bool Hex::operator > (Hex& other) {
+bool Hex::operator > (const Hex& other) const {
     return (*this >= other) && (*this != other);
 }
 
-bool Hex::operator <= (Hex &other) {
+bool Hex::operator <= (const Hex &other) const {
     return !(*this > other);
 }
