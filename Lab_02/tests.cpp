@@ -44,6 +44,11 @@ TEST(Hex_constructors, uns_char_constructor_3) {
     ASSERT_EQ(test.getvalue(), "");
 }
 
+TEST(Hex_constructors, uns_char_constructor_4) {
+    Hex test(18, '0');
+    ASSERT_EQ(test.getvalue(), "0");
+}
+
 TEST(Hex_constructors, init_list_constructor_1) {
     Hex test{'3', '2', '1'};
     ASSERT_EQ(test.getvalue(), "321");
@@ -58,6 +63,16 @@ TEST(Hex_constructors, init_list_constructor_3) {
     ASSERT_EQ(test.getvalue(), ""); 
 }
 
+TEST(Hex_constructors, init_list_constructor_4) {
+    Hex test{'0', '0', '0', '1'};
+    ASSERT_EQ(test.getvalue(), "1");
+}
+
+TEST(Hex_constructors, init_list_constructor_5) {
+    Hex test{'0', '0', '0', '0'};
+    ASSERT_EQ(test.getvalue(), "0");
+}
+
 TEST(Hex_constructors, string_constructor_1) {
     Hex test("34516782dfda");
     ASSERT_EQ(test.getvalue(), "34516782dfda");
@@ -70,6 +85,16 @@ TEST(Hex_constructors, string_constructor_2) {
 TEST(Hex_constructors, string_constructor_3) {
     Hex test("");
     ASSERT_EQ(test.getvalue(), "");
+}
+
+TEST(Hex_constructors, string_constructor_4) {
+    Hex test("0000025f");
+    ASSERT_EQ(test.getvalue(), "25f");
+}
+
+TEST(Hex_constructors, string_constructor_5) {
+    Hex test("000000");
+    ASSERT_EQ(test.getvalue(), "0");
 }
 
 TEST(Hex_constructors, lvalue_constructor_1) {
@@ -89,11 +114,6 @@ TEST(Not_task_methods, getsize_1) {
     ASSERT_EQ(a.getsize(), 3);
 }
 
-TEST(Not_task_methods, InsignificantZeroCount_1) {
-    Hex test("000001a32");
-    ASSERT_EQ(test.InsignificantZeroCount(), 5);
-}
-
 TEST(Not_task_methods, HexToDecimal_1) {
     Hex test("af123");
     ASSERT_EQ(test.HexToDecimal(), 717091);
@@ -105,7 +125,7 @@ TEST(Not_task_methods, HexToDecimal_2) {
 }
 
 TEST(Not_task_methods, getvalue_1) {
-    Hex test{'1', '2', '4', 'f', 'f'};
+    Hex test{'0', '1', '2', '4', 'f', 'f'};
     ASSERT_EQ(test.getvalue(), "124ff");
 }
 
@@ -131,7 +151,7 @@ TEST(Operators, lvalue_copy_3) {
 }
 
 TEST(Operators, lvalue_copy_4) {
-    Hex a("123");
+    Hex a("000123");
     Hex b("FFFFFaaaFFF");
     b = a;
     ASSERT_EQ(b.getvalue(), "123");
@@ -145,7 +165,7 @@ TEST(Operators, lvalue_copy_5) {
 }
 
 TEST(Operators, rvalue_copy_1) {
-    Hex a("123");
+    Hex a("000123");
     Hex b;
     b = std::move(a);
     ASSERT_TRUE((a.getvalue() == "") && (b.getvalue() == "123"));
@@ -202,14 +222,14 @@ TEST(Operators, plus_eq_3) {
 
 TEST(Operators, plus_eq_4) {
     Hex a("fffddd4532");
-    Hex b("dddfa5678");
+    Hex b("000dddfa5678");
     a += b;
     ASSERT_EQ(a.getvalue(), "10DDBD79BAA");
 }
 
 TEST(Operators, plus_1) {
     Hex a("111");
-    Hex b("1");
+    Hex b("0001");
     a = a + b;
     ASSERT_EQ(a.getvalue(), "112");
 }
@@ -269,6 +289,13 @@ TEST(Operators, minus_equal_5) {
     ASSERT_EQ(a.getvalue(), "");
 }
 
+TEST(Operators, minus_equal_6) {
+    Hex a("1000000");
+    Hex b("999000");
+    a -= b;
+    ASSERT_EQ(a.getvalue(), "667000");
+}
+
 TEST(Operators, minus_1) {
     Hex a{};
     Hex b("12345");
@@ -301,6 +328,13 @@ TEST(Operators, minus_5) {
     Hex b(0, '1');
     a = a - b;
     ASSERT_EQ(a.getvalue(), "");
+}
+
+TEST(Operators, minus_6) {
+    Hex a("0001000000");
+    Hex b{'0', '0', '0', '9', '9', '9', '0', '0', '0'};
+    a = a - b;
+    ASSERT_EQ(a.getvalue(), "667000");
 }
 
 TEST(Operators, equality_1) {
@@ -401,7 +435,7 @@ TEST(Operators, more_4) {
 
 TEST(Operators, more_or_equal_1) {
     Hex a("FFFFFFF");
-    Hex b("fffffff");
+    Hex b("000fffffff");
     ASSERT_TRUE((a >= b) && (b >= a));
 }
 
@@ -436,7 +470,7 @@ TEST(Operators, less_or_equal_2) {
 }
 
 TEST(Operators, less_or_equal_3) {
-    Hex a("fdfdfdfdfd");
+    Hex a("00fdfdfdfdfd");
     Hex b("1231231233");
     ASSERT_TRUE(a >= b);
 }

@@ -1,27 +1,27 @@
 #include "Hex.hpp"
 
 int HexCharToInt(unsigned char value) {
-    if ((value >= '0') && (value <= '9')) {
+    if (value >= '0' && value <= '9') {
         return value - '0';
-    } else if ((value >= 'A') && (value <= 'F')) {
+    } else if (value >= 'A' && value <= 'F') {
         return value - 'A' + 10;
-    } else if ((value >= 'a') && (value <= 'f')) {
+    } else if (value >= 'a' && value <= 'f') {
         return value - 'a' + 10;
     }
     throw std::logic_error("Not a hex symbol");
 }
 
 char IntToHexChar(int value) {
-    if ((value >= 0) && (value <= 9)) {
+    if (value >= 0 && value <= 9) {
         return '0' + value;
-    } else if ((value >= 10) && (value <= 15)) {
+    } else if (value >= 10 && value <= 15) {
         return 'A' + value - 10;
     }
     throw std::logic_error("Bad int number");
 }
 
 bool IsHex(unsigned char value) {
-    if (!(((value >= '0') && (value <= '9')) || ((value >= 'A') && (value <= 'F')) || ((value >= 'a') && (value <= 'f')))) {
+    if (!((value >= '0' && value <= '9') || (value >= 'A' && value <= 'F') || (value >= 'a' && value <= 'f'))) {
         return false;
     }
     return true;
@@ -41,6 +41,11 @@ Hex::Hex(const size_t& n, unsigned char t) {
         throw std::logic_error("This digit doesn't belong to hex system");
     }
     for (size_t i = 0; i < size; ++i) {
+        if (t == '0' && size > 0) {
+            digits[0] = '0';
+            size = 1;
+            break; 
+        }
         digits[i] = t;
     }
 }
@@ -50,6 +55,8 @@ Hex::Hex(const std::initializer_list<unsigned char>& t) {
     capacity = size * 2;
     digits = new unsigned char[capacity];
     size_t i = size - 1;
+    size_t insignificantzerocount = 0;
+    bool goodzero = false;
     for (const auto& elem : t) {
         if (!IsHex(elem)) {
             delete[] digits;
@@ -58,9 +65,16 @@ Hex::Hex(const std::initializer_list<unsigned char>& t) {
             capacity = 0;
             throw std::logic_error("This digit doesn't belong to hex system");
         }
+        if (!goodzero && size != 1 && elem == '0' && i != 0) {
+            ++insignificantzerocount;
+            --i;
+            continue;
+        }
+        goodzero = true;
         digits[i] = elem;
         --i;
     }
+    size = t.size() - insignificantzerocount;
 }
 
 Hex::Hex(const std::string& t) {
@@ -68,6 +82,8 @@ Hex::Hex(const std::string& t) {
     capacity = size * 2;
     digits = new unsigned char[capacity];
     size_t i = size - 1;
+    size_t insignificantzerocount = 0;
+    bool goodzero = false;
     for (const auto& elem : t) {
         if (!IsHex(elem)) {
             delete[] digits;
@@ -76,9 +92,16 @@ Hex::Hex(const std::string& t) {
             capacity = 0;
             throw std::logic_error("This digit doesn't belong to hex system");
         }
+        if (!goodzero && size != 1 && elem == '0' && i != 0) {
+            ++insignificantzerocount;
+            --i;
+            continue;
+        }
+        goodzero = true;
         digits[i] = elem;
         --i;
     }
+    size = t.size() - insignificantzerocount;
 }
 
 Hex::Hex(const Hex& other) {
@@ -120,23 +143,11 @@ Hex::~Hex() noexcept {
     digits = nullptr;
 }
 
-size_t Hex::InsignificantZeroCount() {
-    size_t count = 0;
-    for (size_t i = 0; i < size; ++i) {
-        if (digits[i] == '0') {
-            ++count;
-            continue;
-        }
-        count = 0;
-    }
-    return count;
-}
-
 size_t Hex::HexToDecimal() {
     size_t temp = 0;
     size_t ans = 0;
     for (size_t i = 0; i < size; ++i) {
-        ans = ans + (HexCharToInt(digits[i]) * pow(16, temp));
+        ans = ans + HexCharToInt(digits[i]) * pow(16, temp);
         ++temp;
     }
     return ans;   
@@ -144,9 +155,9 @@ size_t Hex::HexToDecimal() {
 
 std::string Hex::getvalue() {
     std::string ans = "";
-    size_t badzerocount = InsignificantZeroCount();
-    for (size_t i = 0; i < size - badzerocount; ++i) {
-        ans = static_cast<char>(digits[i]) + ans;
+    for (size_t i = 0; i < size; ++i) {
+        if (digits[i] != '\0')
+            ans = static_cast<char>(digits[i]) + ans;
     }
     return ans;
 }
@@ -196,7 +207,7 @@ Hex& Hex::operator += (const Hex& other) {
     int i = 0;
     int j = 0;
 
-    while ((i < size) || (j < other.size) || (carry != 0)) {
+    while (i < size || j < other.size || carry != 0) {
         int sum = carry;
 
         if (i < size) {
@@ -231,12 +242,6 @@ Hex Hex::operator + (const Hex& other) {
 }
 
 Hex& Hex::operator -= (Hex& other) {
-    size_t leftoldsize = size;
-    size_t rightoldsize = other.size;
-
-    size =  leftoldsize - InsignificantZeroCount();
-    other.size = rightoldsize - other.InsignificantZeroCount();
-
     if (size < other.size) {
         throw std::logic_error("The size of left value is less than size of right value");
     }
@@ -251,7 +256,7 @@ Hex& Hex::operator -= (Hex& other) {
     int i = 0;
     int j = 0;
 
-    while ((i < size) || (j < other.size)) {
+    while (i < size || j < other.size) {
         int digit1 = (i < size) ? HexCharToInt(digits[i]) : 0;
         int digit2 = (j < other.size) ? HexCharToInt(other.digits[j]) : 0;
 
@@ -266,18 +271,24 @@ Hex& Hex::operator -= (Hex& other) {
 
         int difference = digit1 - digit2;
 
-        result = IntToHexChar(difference) + result;
+        result = result + IntToHexChar(difference);
 
         ++i;
         ++j;
     }
 
-    for(size_t i = 0; i < result.size(); ++i) {
-        digits[size - 1 - i] = result[i];
+    bool goodzero = false;
+    for (int i = result.size() - 1; i >= 0 && result.size() != 1; --i) {
+        if (result[i] == '0' && !goodzero && i != 0) {
+            result[i] = '\0';
+            continue;
+        }
+        goodzero = true;
     }
 
-    size = leftoldsize;
-    other.size = rightoldsize;
+    for(size_t i = 0; i < result.size(); ++i) {
+        digits[i] = result[i];
+    }
 
     return *this;
 }

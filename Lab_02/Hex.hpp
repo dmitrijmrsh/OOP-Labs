@@ -29,7 +29,6 @@ class Hex {
 
         //Дополнительные методы
         size_t getsize();
-        size_t InsignificantZeroCount();
         size_t HexToDecimal();
         std::string getvalue();
 
