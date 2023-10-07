@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "Hex.hpp"
+#include "../header/Hex.hpp"
 
 TEST(functions, test_01) {
     ASSERT_TRUE(HexCharToInt('f') == 15);

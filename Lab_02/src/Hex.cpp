@@ -1,4 +1,4 @@
-#include "Hex.hpp"
+#include "../header/Hex.hpp"
 
 int HexCharToInt(unsigned char value) {
     if (value >= '0' && value <= '9') {
