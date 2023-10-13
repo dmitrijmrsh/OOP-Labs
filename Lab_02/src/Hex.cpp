@@ -137,10 +137,12 @@ size_t Hex::getsize() const {
 }
 
 Hex::~Hex() noexcept {
+    if (capacity != 0) {
+        delete[] digits;
+        digits = nullptr;
+    }
     size = 0;
     capacity = 0;
-    delete[] digits;
-    digits = nullptr;
 }
 
 size_t Hex::HexToDecimal() const {
@@ -154,10 +156,10 @@ size_t Hex::HexToDecimal() const {
 }
 
 std::string Hex::getvalue() const {
-    std::string ans = "";
+    std::string ans(size, '\0');
     for (size_t i = 0; i < size; ++i) {
         if (digits[i] != '\0')
-            ans = static_cast<char>(digits[i]) + ans;
+            ans[size - i - 1] = static_cast<char>(digits[i]);
     }
     return ans;
 }
@@ -280,11 +282,13 @@ Hex& Hex::operator -= (const Hex& other) {
     bool goodzero = false;
     for (int i = result.size() - 1; i >= 0 && result.size() != 1; --i) {
         if (result[i] == '0' && !goodzero && i != 0) {
-            result[i] = '\0';
+            result.erase(result.begin() + i);
             continue;
         }
         goodzero = true;
     }
+
+    size = result.size();
 
     for(size_t i = 0; i < result.size(); ++i) {
         digits[i] = result[i];

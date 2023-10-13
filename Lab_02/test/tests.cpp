@@ -129,6 +129,18 @@ TEST(Not_task_methods, getvalue_1) {
     ASSERT_EQ(test.getvalue(), "124ff");
 }
 
+TEST(Destructor, test_1) {
+    Hex a("999000");
+    a.~Hex();
+    ASSERT_TRUE(a.getsize() == 0 && a.getvalue() == "");
+}
+
+TEST(Destructor, test_2) {
+    Hex a;
+    a.~Hex();
+    ASSERT_TRUE(a.getsize() == 0 && a.getvalue() == "");
+}
+
 TEST(Operators, lvalue_copy_1) {
     Hex a("123");
     Hex b;
