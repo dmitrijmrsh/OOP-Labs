@@ -137,12 +137,12 @@ size_t Hex::getsize() const {
 }
 
 Hex::~Hex() noexcept {
-    if (capacity != 0) {
+    size = 0;
+    capacity = 0;
+    if (digits != nullptr) {
         delete[] digits;
         digits = nullptr;
     }
-    size = 0;
-    capacity = 0;
 }
 
 size_t Hex::HexToDecimal() const {
