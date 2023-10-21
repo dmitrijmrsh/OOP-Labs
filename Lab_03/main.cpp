@@ -17,34 +17,15 @@ int main() {
     arr.push_back(&t);
     std::cin >> o;
     arr.push_back(&o);
+    std::cout << arr;
+    std::cout << "common area: " << arr.CommonArea() << '\n';
     std::cout << '\n';
-    Point center;
-    double area;
-    for (size_t i = 0; i < arr.getsize(); ++i) {
-        std::cout << arr[i]->getname() << " ";
-        center = arr.FigureCenter(i);
-        std::cout << "center: " << center << " ";
-        area = arr.FigureArea(i);
-        std::cout << "area: " << area << '\n';
-    }
-    std::cout << "common area: " << arr.CommonArea() << '\n';
     arr.erase(1);
-    for (size_t i = 0; i < arr.getsize(); ++i) {
-        std::cout << arr[i]->getname() << " ";
-        center = arr.FigureCenter(i);
-        std::cout << "center: " << center << " ";
-        area = arr.FigureArea(i);
-        std::cout << "area: " << area << '\n';;
-    }
+    std::cout << arr;
     std::cout << "common area: " << arr.CommonArea() << '\n';
+    std::cout << '\n';
     arr.pop_back();
-    for (size_t i = 0; i < arr.getsize(); ++i) {
-        std::cout << arr[i]->getname() << " ";
-        center = arr.FigureCenter(i);
-        std::cout << "center: " << center << " ";
-        area = arr.FigureArea(i);
-        std::cout << "area: " << area << '\n';
-    }
+    std::cout << arr;
     std::cout << "common area: " << arr.CommonArea() << '\n';
     
     return 0;

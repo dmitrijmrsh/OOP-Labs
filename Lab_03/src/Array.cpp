@@ -89,6 +89,19 @@ double Array::CommonArea() {
     return sum;
 }
 
+std::ostream& operator << (std::ostream& out, Array& arr) {
+    Point center;
+    double area;
+    for (size_t i = 0; i < arr.getsize(); ++i) {
+        out << arr[i]->getname() << " ";
+        center = arr.FigureCenter(i);
+        std::cout << "center: " << center << " ";
+        area = arr.FigureArea(i);
+        std::cout << "area: " << area << '\n';
+    }
+    return out;
+}
+
 size_t Array::getsize() {
     return size;
 }

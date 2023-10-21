@@ -22,6 +22,7 @@ class Array {
         double CommonArea();
         size_t getsize();
         size_t getcapacity();
+        friend std::ostream& operator << (std::ostream&, Array& arr);
 
         ~Array();
 };
