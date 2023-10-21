@@ -9,7 +9,8 @@ class Square : public Figure {
 
         void print(std::ostream&) override;
         void input(std::istream&) override;
-        void check(const Figure&) const override;
+        void check_constructor(const Figure&) const override;
+        void check_points(const Point&, const Point&, const Point&, const Point&);
     public:
         Square();
         Square(const Point&, const Point&, const Point&, const Point&);
@@ -21,8 +22,8 @@ class Square : public Figure {
         explicit virtual operator double() const override;
         friend std::ostream& operator << (std::ostream&, Square&);
         friend std::istream& operator >> (std::istream&, Square&);
-        Figure& operator = (const Figure&) override;
-        Figure& operator = (Figure&&) override;
+        Square& operator = (const Square&);
+        Square& operator = (Square&&);
         bool operator == (const Figure&) const override;
 
         virtual ~Square() = default;

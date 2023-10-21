@@ -13,7 +13,8 @@ class Octagon : public Figure {
     
         void print(std::ostream&) override;
         void input(std::istream&) override;
-        void check(const Figure&) const override;
+        void check_constructor(const Figure&) const override;
+        void check_points(const Point&, const Point&, const Point&, const Point&, const Point&, const Point&, const Point&, const Point&);
     public:
         Octagon();
         Octagon(const Point&, const Point&, const Point&, const Point&, const Point&, const Point&, const Point&, const Point&);
@@ -25,8 +26,8 @@ class Octagon : public Figure {
         explicit virtual operator double() const override;
         friend std::ostream& operator << (std::ostream&, Octagon&);
         friend std::istream& operator >> (std::istream&, Octagon&);
-        Figure& operator = (const Figure&) override;
-        Figure& operator = (Figure&&) override;
+        Octagon& operator = (const Octagon&);
+        Octagon& operator = (Octagon&&);
         bool operator == (const Figure&) const override;
 
         virtual ~Octagon() = default;

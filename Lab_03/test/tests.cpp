@@ -4,6 +4,7 @@
 #include "../headers/Triangle.hpp"
 #include "../headers/Square.hpp"
 #include "../headers/Octagon.hpp"
+#include "../headers/Array.hpp"
 
 TEST(Point_class, default_constructor) {
     Point p;
@@ -127,17 +128,11 @@ TEST(Triangle_operators, equality_operator) {
     ASSERT_TRUE(t1 == t2);
 }
 
-/*TEST(Triangle_operators, lvalue_copy_1) {
+TEST(Triangle_operators, lvalue_copy_1) {
     Triangle t(Point(1,sqrt(3)), Point(-1,sqrt(3)), Point(0,2*sqrt(3)));
     Triangle New;
     New = t;
     ASSERT_TRUE(New == t);
-}
-
-TEST(Triangle_operators, lvalue_copy_2) {
-    Triangle t;
-    Square s(Point(0,0), Point(0,4), Point(4,4), Point(4,0));
-    ASSERT_ANY_THROW(t = s);
 }
 
 TEST(Triangle_operators, rvalue_copy_1) {
@@ -146,12 +141,6 @@ TEST(Triangle_operators, rvalue_copy_1) {
     Triangle New2 = std::move(t);
     ASSERT_TRUE(New1 == New2);
 }
-
-TEST(Triangle_operators, rvalue_copy_2) {
-    Triangle t;
-    Square s(Point(0,0), Point(0,4), Point(4,4), Point(4,0));
-    ASSERT_ANY_THROW(t = std::move(s));
-}*/
 
 TEST(Square_constructors, default_constructor) {
     Square s;
@@ -206,11 +195,18 @@ TEST(Square_operators, equality_operator) {
     ASSERT_TRUE(s1 == s2);
 }
 
-/*TEST(Square_operators, lvalue_copy) {
+TEST(Square_operators, lvalue_copy_1) {
     Square s1(Point(0,0), Point(0,4), Point(4,4), Point(4,0));
     Square s2;
     s2 = s1;
     ASSERT_TRUE(s1 == s2);
+}
+
+TEST(Square_operators, lvalue_copy_2) {
+    Square s1(Point(0,0), Point(0,4), Point(4,4), Point(4,0));
+    Square s2;
+    s1 = s2;
+    ASSERT_TRUE(s1 == s2 && s1.getname() == "Square");
 }
 
 TEST(Square_operators, rvalue_copy) {
@@ -220,7 +216,159 @@ TEST(Square_operators, rvalue_copy) {
     s3 = s1;
     s2 = std::move(s1);
     ASSERT_TRUE(s2 == s3);
-}*/
+}
+
+TEST(Octagon_class, default_constructor) {
+    Octagon o;
+    ASSERT_TRUE(o.getname() == "Octagon");
+}
+
+TEST(Octagon_class, points_constructor_1) {
+    ASSERT_ANY_THROW(Octagon o(Point(0, 0), Point(0, 0), Point(0, 0), Point(0, 0), Point(0, 0), Point(0, 0), Point(0, 0), Point(0, 0)));
+}
+
+TEST(Octagon_class, points_constructor_2) {
+    ASSERT_ANY_THROW(Octagon o(Point(1, 1), Point(0, 0), Point(2, 2), Point(3, 3), Point(4, 4), Point(5, 5), Point(6, 6), Point(7, 7)));
+}
+
+TEST(Octagon_class, points_constructor_3) {
+    Octagon o(Point(0, -3), Point(2, -2), Point(3, 0), Point(2, 2), Point(0, 3), Point(-2, 2), Point(-3, 0), Point(-2, -2));
+    o.~Octagon();
+}
+
+TEST(Octagon_class, points_constructor_4) {
+    Octagon o(Point(3, -3), Point(5, -2), Point(6, 0), Point(5, 2), Point(3, 3), Point(1, 2), Point(0, 0), Point(1, -2));
+    o.~Octagon();
+}
+
+TEST(Octagon_methods, center_method_1) {
+    Octagon o(Point(0, -3), Point(2, -2), Point(3, 0), Point(2, 2), Point(0, 3), Point(-2, 2), Point(-3, 0), Point(-2, -2));
+    Point center = o.Center();
+    ASSERT_TRUE(center.get_x_value() == 0 && center.get_y_value() == 0);
+}
+
+TEST(Octagon_methods, center_method_2) {
+    Octagon o(Point(3, -3), Point(5, -2), Point(6, 0), Point(5, 2), Point(3, 3), Point(1, 2), Point(0, 0), Point(1, -2));
+    Point center = o.Center();
+    ASSERT_TRUE(center.get_x_value() == 3 && center.get_y_value() == 0);
+}
+
+TEST(Octagon_methods, area_method_1) {
+    Octagon o(Point(3, -3), Point(5, -2), Point(6, 0), Point(5, 2), Point(3, 3), Point(1, 2), Point(0, 0), Point(1, -2));
+    double area = o.Area();
+    ASSERT_TRUE(area = 24.1421);
+}
+
+TEST(Octagon_methods, area_method_2) {
+    Octagon o(Point(0, -1.5), Point(1, -1), Point(1.5, 0), Point(1, 1), Point(0, 1.5), Point(-1, 1), Point(-1.5, 0), Point(-1, -1));
+    double area = o.Area();
+    ASSERT_TRUE(area = 6.03553);
+}
+
+TEST(Octagon_methods, double_cast_method) {
+    Octagon o(Point(0, -1.5), Point(1, -1), Point(1.5, 0), Point(1, 1), Point(0, 1.5), Point(-1, 1), Point(-1.5, 0), Point(-1, -1));
+    double temp = double(o);
+    ASSERT_TRUE(temp = 6.03553);
+}
+
+TEST(Octagon_operators, equality_operator) {
+    Octagon o1(Point(0, -1.5), Point(1, -1), Point(1.5, 0), Point(1, 1), Point(0, 1.5), Point(-1, 1), Point(-1.5, 0), Point(-1, -1));
+    Octagon o2(Point(0, -1.5), Point(1, -1), Point(1.5, 0), Point(1, 1), Point(0, 1.5), Point(-1, 1), Point(-1.5, 0), Point(-1, -1));
+    ASSERT_TRUE(o1 == o2);
+}
+
+TEST(Octagon_operators, lvalue_copy_1) {
+    Octagon o(Point(0, -1.5), Point(1, -1), Point(1.5, 0), Point(1, 1), Point(0, 1.5), Point(-1, 1), Point(-1.5, 0), Point(-1, -1));
+    Octagon temp;
+    temp = o;
+    ASSERT_TRUE(temp == o);
+}
+
+TEST(Octagon_operators, lvalue_copy_2) {
+    Octagon o(Point(0, -1.5), Point(1, -1), Point(1.5, 0), Point(1, 1), Point(0, 1.5), Point(-1, 1), Point(-1.5, 0), Point(-1, -1));
+    Octagon temp;
+    o = temp;
+    ASSERT_TRUE(temp == o);
+}
+
+TEST(Octagon_operators, rvalue_copy) {
+    Octagon o(Point(0, -1.5), Point(1, -1), Point(1.5, 0), Point(1, 1), Point(0, 1.5), Point(-1, 1), Point(-1.5, 0), Point(-1, -1));
+    Octagon temp;
+    Octagon oct;
+    oct = o;
+    temp = std::move(o);
+    ASSERT_TRUE(temp == oct);
+}
+
+TEST(Array_constructors, default_constructor) {
+    Array arr;
+    ASSERT_TRUE(arr.getcapacity() == 0 && arr.getsize() == 0);
+}
+
+TEST(Array_constructors, default_constructor_destructor) {
+    Array arr;
+    arr.~Array();
+}
+
+TEST(Array_constructors, size_constructor_1) {
+    Array arr(0);
+    ASSERT_TRUE(arr.getcapacity() == 2 && arr.getsize() == 0);
+}
+
+TEST(Array_constructors, size_constructor_2) {
+    Array arr(3);
+    ASSERT_TRUE(arr.getcapacity() == 6 && arr.getsize() == 3);
+}
+
+TEST(Array_methods, push_back_method) {
+    Array arr(0);
+    Square s1(Point(0,0), Point(0,4), Point(4,4), Point(4,0));
+    arr.push_back(&s1);
+    ASSERT_TRUE(arr.getsize() == 1);
+}
+
+TEST(Array_methods, pop_back_method) {
+    Array arr(1);
+    arr.pop_back();
+    ASSERT_TRUE(arr.getsize() == 0);
+}
+
+TEST(Array_methods, erase_method) {
+    Array arr(0);
+    Square s1(Point(0,0), Point(0,4), Point(4,4), Point(4,0));
+    Octagon o(Point(0, -1.5), Point(1, -1), Point(1.5, 0), Point(1, 1), Point(0, 1.5), Point(-1, 1), Point(-1.5, 0), Point(-1, -1));
+    Triangle t(Point(1,sqrt(3)), Point(-1,sqrt(3)), Point(0,2*sqrt(3)));
+    arr.push_back(&s1);
+    arr.push_back(&o);
+    arr.push_back(&t);
+    arr.erase(1);
+    ASSERT_TRUE(arr.getsize() == 2 && *(arr[0]) == s1 && *(arr[1]) == t);
+}
+
+TEST(Array_methods, methods_thows_1) {
+    Array arr(0);
+    Square s1(Point(0,0), Point(0,4), Point(4,4), Point(4,0));
+    Octagon o(Point(0, -1.5), Point(1, -1), Point(1.5, 0), Point(1, 1), Point(0, 1.5), Point(-1, 1), Point(-1.5, 0), Point(-1, -1));
+    Triangle t(Point(1,sqrt(3)), Point(-1,sqrt(3)), Point(0,2*sqrt(3)));
+    ASSERT_ANY_THROW(arr.FigureCenter(10));
+}
+
+TEST(Array_methods, methods_thows_2) {
+    Array arr(0);
+    Square s1(Point(0,0), Point(0,4), Point(4,4), Point(4,0));
+    Octagon o(Point(0, -1.5), Point(1, -1), Point(1.5, 0), Point(1, 1), Point(0, 1.5), Point(-1, 1), Point(-1.5, 0), Point(-1, -1));
+    Triangle t(Point(1,sqrt(3)), Point(-1,sqrt(3)), Point(0,2*sqrt(3)));
+    ASSERT_ANY_THROW(arr.FigureArea(10));
+}
+
+TEST(Array_methods, methods_throws_3) {
+    Array arr(0);
+    Square s1(Point(0,0), Point(0,4), Point(4,4), Point(4,0));
+    Octagon o(Point(0, -1.5), Point(1, -1), Point(1.5, 0), Point(1, 1), Point(0, 1.5), Point(-1, 1), Point(-1.5, 0), Point(-1, -1));
+    Triangle t(Point(1,sqrt(3)), Point(-1,sqrt(3)), Point(0,2*sqrt(3)));
+    ASSERT_ANY_THROW(arr[10]);
+}
+
 
 int main(int argc, char** argv) {
     testing::InitGoogleTest(&argc, argv);

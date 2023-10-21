@@ -1,6 +1,6 @@
 #include "../headers/Octagon.hpp"
 
-void Octagon::check(const Figure& f) const {
+void Octagon::check_constructor(const Figure& f) const {
     const Octagon* temp = dynamic_cast<const Octagon*>(&f);
     if (temp->a == temp->b || temp->a == temp->c || temp->a == temp->d || temp->a == temp->f || 
     temp->a == temp->f || temp->a == temp->g || temp->a == temp->h || temp->b == temp->c ||
@@ -19,7 +19,33 @@ void Octagon::check(const Figure& f) const {
     double ef = round(Point::Distance(temp->e, temp->f) * 1000) / 1000;
     double fg = round(Point::Distance(temp->f, temp->g) * 1000) / 1000;
     double gh = round(Point::Distance(temp->g, temp->h) * 1000) / 1000;
-    if (ab == bc && ab == cd && ab == de && ab == ef && ab == fg && ab == gh) {
+    double ha = round(Point::Distance(temp->h, temp->a) * 1000) / 1000;
+    if (ab == bc && ab == cd && ab == de && ab == ef && ab == fg && ab == gh && ab == ha) {
+        return;
+    }
+    throw std::logic_error("Octagon isn't equilateral");
+}
+
+void Octagon::check_points(const Point& a, const Point& b, const Point& c, const Point& d, const Point& e, const Point& f, const Point& g, const Point& h) {
+    if (a == b || a == c || a == d || a == f || 
+    a == f || a == g || a == h || b == c ||
+    b == c || b == d || b == e || b == f ||
+    b == g || b == h || c == d || c == d ||
+    c == e || c == f || c == g || c == h ||
+    d == e || d == f || d == g || g == h ||
+    e == f || e == g || e == h || f == g ||
+    f == h || g == h) {
+        throw std::logic_error("Some points of octagon are the same");
+    }
+    double ab = round(Point::Distance(a, b) * 1000) / 1000;
+    double bc = round(Point::Distance(b, c) * 1000) / 1000;
+    double cd = round(Point::Distance(c, d) * 1000) / 1000;
+    double de = round(Point::Distance(d, e) * 1000) / 1000;
+    double ef = round(Point::Distance(e, f) * 1000) / 1000;
+    double fg = round(Point::Distance(f, g) * 1000) / 1000;
+    double gh = round(Point::Distance(g, h) * 1000) / 1000;
+    double ha = round(Point::Distance(h, a) * 1000) / 1000;
+    if (ab == bc && ab == cd && ab == de && ab == ef && ab == fg && ab == gh && ab == ha) {
         return;
     }
     throw std::logic_error("Octagon isn't equilateral");
@@ -36,7 +62,7 @@ Octagon::Octagon(const Point& a, const Point& b, const Point& c, const Point& d,
     this->f = f;
     this->g = g;
     this->h = h;
-    check(*this);
+    check_constructor(*this);
 }
 
 Octagon::Octagon(const Octagon& t) : Figure("Octagon") {
@@ -86,6 +112,7 @@ void Octagon::input(std::istream& in) {
     in >> f;
     in >> g;
     in >> h;
+    check_points(a, b, c, d, e, f, g, h);
 }
 
 std::ostream& operator << (std::ostream& out, Octagon& t) {
@@ -98,32 +125,20 @@ std::istream& operator >> (std::istream& in, Octagon& t) {
     return in;
 }
 
-Figure& Octagon::operator = (const Figure& f) {
-    if (name != f.getname()) {
-        throw std::logic_error("You're trying to copy different figures");
-    }
-    const Octagon* temp = dynamic_cast<const Octagon*>(&f);
-    if (this != temp) {
-        this->a = temp->a;
-        this->b = temp->b;
-        this->c = temp->c;
+Octagon& Octagon::operator = (const Octagon& o) {
+    if (this != &o) {
+        a = o.a;
+        b = o.b;
+        c = o.c;
     }
     return *this;
 }
 
-Figure& Octagon::operator = (Figure&& f) {
-    if (name != f.getname()) {
-        throw std::logic_error("You're trying to copy different figures");
-    }
-    const Octagon* temp = dynamic_cast<const Octagon*>(&f);
-
-    if (this != temp) {
-        this->a = temp->a;
-        this->b = temp->b;
-        this->c = temp->c;
-
-        delete temp;
-        temp = nullptr;
+Octagon& Octagon::operator = (Octagon&& o) {
+    if (this != &o) {
+        a = o.a;
+        b = o.b;
+        c = o.c;
     }
     return *this;
 }

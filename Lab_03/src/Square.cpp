@@ -1,6 +1,6 @@
 #include "../headers/Square.hpp"
 
-void Square::check(const Figure& f) const {
+void Square::check_constructor(const Figure& f) const {
     const Square* temp = dynamic_cast<const Square*>(&f);
     if (temp->a == temp->b || temp->a == temp->c || temp->a == temp->d ||
     temp->b == temp->c || temp->b == temp->d || temp->c == temp->d) {
@@ -16,14 +16,29 @@ void Square::check(const Figure& f) const {
     throw std::logic_error("That's not a square");
 }
 
+void Square::check_points(const Point& a, const Point& b, const Point& c, const Point& d) {
+    if (a == b || a == c || a == d ||
+    b == c || b == d || c == d) {
+        throw std::logic_error("Some points of Square are the same");
+    }
+    double ab = round(Point::Distance(a, b) * 1000) / 1000;
+    double bc = round(Point::Distance(b, c) * 1000) / 1000;
+    double cd = round(Point::Distance(c, d) * 1000) / 1000;
+    double da = round(Point::Distance(d, a) * 1000) / 1000;
+    if (ab == bc && ab == cd && ab == da) {
+        return;
+    }
+    throw std::logic_error("That's not a square");
+}
+
 Square::Square() : Figure("Square") {};
 
-Square::Square(const Point& a, const Point& b, const Point& c, const Point& d) {
+Square::Square(const Point& a, const Point& b, const Point& c, const Point& d) : Figure("Square") {
     this->a = a;
     this->b = b;
     this->c = c;
     this->d = d;
-    check(*this);
+    check_constructor(*this);
 }
 
 Square::Square(const Square& t) : Figure("Square") {
@@ -61,6 +76,7 @@ void Square::input(std::istream& in) {
     in >> b;
     in >> c;
     in >> d;
+    check_points(a, b, c, d);
 }
 
 std::ostream& operator << (std::ostream& out, Square& t) {
@@ -73,33 +89,22 @@ std::istream& operator >> (std::istream& in, Square& t) {
     return in;
 }
 
-Figure& Square::operator = (const Figure& f) {
-    if (name != f.getname()) {
-        throw std::logic_error("You're trying to copy different figures");
-    }
-    const Square* temp = dynamic_cast<const Square*>(&f);
-    if (this != temp) {
-        this->a = temp->a;
-        this->b = temp->b;
-        this->c = temp->c;
-        this->d = temp->d;
+Square& Square::operator = (const Square& s) {
+    if (this != &s) {
+        a = s.a;
+        b = s.b;
+        c = s.c;
+        d = s.d;
     }
    return *this;
 }
 
-Figure& Square::operator = (Figure&& f) {
-    if (name != f.getname()) {
-        throw std::logic_error("You're trying to copy different figures");
-    }
-    const Square* temp = dynamic_cast<const Square*>(&f);
-    if (this != temp) {
-        this->a = temp->a;
-        this->b = temp->b;
-        this->c = temp->c;
-        this->d = temp->d;
-
-        delete temp;
-        temp = nullptr;
+Square& Square::operator = (Square&& s) {
+    if (this != &s) {
+        a = s.a;
+        b = s.b;
+        c = s.c;
+        d = s.d;
     }
     return *this;
 }

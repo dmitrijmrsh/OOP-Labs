@@ -13,7 +13,7 @@ class Figure {
 
         virtual void print(std::ostream&) = 0;
         virtual void input(std::istream&) = 0;
-        virtual void check(const Figure&) const = 0;
+        virtual void check_constructor(const Figure&) const = 0;
     public:
         Figure() = default;
         Figure(const std::string&);
@@ -23,8 +23,6 @@ class Figure {
         virtual double Area() const = 0;
 
         virtual bool operator == (const Figure&) const = 0;
-        virtual Figure& operator = (const Figure&) = 0;
-        virtual Figure& operator = (Figure&&) = 0;
         explicit virtual operator double() const = 0;
 
         virtual ~Figure() = default;

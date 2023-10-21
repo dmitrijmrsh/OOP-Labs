@@ -8,7 +8,8 @@ class Triangle : public Figure {
 
         void print(std::ostream&) override;
         void input(std::istream&) override;
-        void check(const Figure&) const override;
+        void check_constructor(const Figure&) const override;
+        void check_points(const Point&, const Point&, const Point&);
     public:
         Triangle();
         Triangle(const Point&, const Point&, const Point&);
@@ -20,8 +21,8 @@ class Triangle : public Figure {
         explicit virtual operator double() const override;
         friend std::ostream& operator << (std::ostream&, Triangle&);
         friend std::istream& operator >> (std::istream&, Triangle&);
-        Figure& operator = (const Figure&) override;
-        Figure& operator = (Figure&&) override;
+        Triangle& operator = (const Triangle&);
+        Triangle& operator = (Triangle&&);
         bool operator == (const Figure&) const override;
 
         virtual ~Triangle() = default;
