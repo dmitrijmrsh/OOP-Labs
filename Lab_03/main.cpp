@@ -17,6 +17,10 @@ int main() {
     arr.push_back(&t);
     std::cin >> o;
     arr.push_back(&o);
+    std::cout << "Square area: " << s.Area() << " center: " << s.Center() << '\n';
+    std::cout << "Triangle area: " << t.Area() << " center: " << s.Center() << '\n';
+    std::cout << "Octagog area: " << o.Area() << " center: " << s.Center() << '\n';
+    std::cout << '\n';
     std::cout << arr;
     std::cout << "common area: " << arr.CommonArea() << '\n';
     std::cout << '\n';

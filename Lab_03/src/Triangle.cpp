@@ -2,29 +2,56 @@
 
 void Triangle::check_constructor(const Figure& f) const {
     const Triangle* temp = dynamic_cast<const Triangle*>(&f);
-    if (temp->a == temp->b || temp->a == temp->c || temp->b == temp->c) {
-        throw std::logic_error("Some points of triangle are the same");
+    if (temp == nullptr) {
+        throw std::logic_error("Bad cast");
     }
-    double ab = round(Point::Distance(temp->a, temp->b) * 1000) / 1000;
-    double bc = round(Point::Distance(temp->b, temp->c) * 1000) / 1000;
-    double ac = round(Point::Distance(temp->a, temp->c) * 1000) / 1000;
-    if (ac == ab && ac == bc) {
-        return;
+    std::vector<Point> points(3);
+    points[0] = temp->a;
+    points[1] = temp->b;
+    points[2] = temp->c;
+    for (int i = 0; i < 2; ++i) {
+        if (points[i] == points[i + 1]) {
+            throw std::logic_error("Some points of triangle are the same");
+        }
     }
-    throw std::logic_error("Triangle isn't equilateral");
+    std::vector<double> sides(3);
+    for (int i = 0; i < 3; ++i) {
+        if (i < 2) {
+            sides[i] = round(Point::Distance(points[i], points[i + 1]) * 1000) / 1000;
+            continue;
+        }
+        sides[i] = round(Point::Distance(points[i], points[0]) * 1000) / 1000;
+    }
+    for (int i = 0; i < 2; ++i) {
+        if (sides[i] != sides[i + 1]) {
+            throw std::logic_error("Triangle isn't equilateral");
+        }
+    }
 }
 
 void Triangle::check_points(const Point& a, const Point& b, const Point& c) {
-    if (a == b || a == c || b == c) {
-        throw std::logic_error("Some points of triangle are the same");
+    std::vector<Point> points(3);
+    points[0] = a;
+    points[1] = b;
+    points[2] = c;
+    for (int i = 0; i < 2; ++i) {
+        if (points[i] == points[i + 1]) {
+            throw std::logic_error("Some points of triangle are the same");
+        }
     }
-    double ab = round(Point::Distance(a, b) * 1000) / 1000;
-    double bc = round(Point::Distance(b, c) * 1000) / 1000;
-    double ac = round(Point::Distance(a, c) * 1000) / 1000;
-    if (ac == ab && ac == bc) {
-        return;
+    std::vector<double> sides(3);
+    for (int i = 0; i < 3; ++i) {
+        if (i < 2) {
+            sides[i] = round(Point::Distance(points[i], points[i + 1]) * 1000) / 1000;
+            continue;
+        }
+        sides[i] = round(Point::Distance(points[i], points[0]) * 1000) / 1000;
     }
-    throw std::logic_error("Triangle isn't equilateral");
+    for (int i = 0; i < 2; ++i) {
+        if (sides[i] != sides[i + 1]) {
+            throw std::logic_error("Triangle isn't equilateral");
+        }
+    }
 }
 
 Triangle::Triangle() : Figure("Triangle") {};
@@ -104,6 +131,9 @@ bool Triangle::operator == (const Figure& f) const {
         return false;
     }
     const Triangle* temp = dynamic_cast<const Triangle*>(&f);
+    if (temp == nullptr) {
+        throw std::logic_error("Bad cast");
+    }
     if (this->Area() == temp->Area()) {
         return true;
     }

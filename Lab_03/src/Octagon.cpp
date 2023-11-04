@@ -2,53 +2,82 @@
 
 void Octagon::check_constructor(const Figure& f) const {
     const Octagon* temp = dynamic_cast<const Octagon*>(&f);
-    if (temp->a == temp->b || temp->a == temp->c || temp->a == temp->d || temp->a == temp->f || 
-    temp->a == temp->f || temp->a == temp->g || temp->a == temp->h || temp->b == temp->c ||
-    temp->b == temp->c || temp->b == temp->d || temp->b == temp->e || temp->b == temp->f ||
-    temp->b == temp->g || temp->b == temp->h || temp->c == temp->d || temp->c == temp->d ||
-    temp->c == temp->e || temp->c == temp->f || temp->c == temp->g || temp->c == temp->h ||
-    temp->d == temp->e || temp->d == temp->f || temp->d == temp->g || temp->g == temp->h ||
-    temp->e == temp->f || temp->e == temp->g || temp->e == temp->h || temp->f == temp->g ||
-    temp->f == temp->h || temp->g == temp->h) {
-        throw std::logic_error("Some points of octagon are the same");
+    if (temp == nullptr) {
+        throw std::logic_error("Bad cast");
     }
-    double ab = round(Point::Distance(temp->a, temp->b) * 1000) / 1000;
-    double bc = round(Point::Distance(temp->b, temp->c) * 1000) / 1000;
-    double cd = round(Point::Distance(temp->c, temp->d) * 1000) / 1000;
-    double de = round(Point::Distance(temp->d, temp->e) * 1000) / 1000;
-    double ef = round(Point::Distance(temp->e, temp->f) * 1000) / 1000;
-    double fg = round(Point::Distance(temp->f, temp->g) * 1000) / 1000;
-    double gh = round(Point::Distance(temp->g, temp->h) * 1000) / 1000;
-    double ha = round(Point::Distance(temp->h, temp->a) * 1000) / 1000;
-    if (ab == bc && ab == cd && ab == de && ab == ef && ab == fg && ab == gh && ab == ha) {
-        return;
+    std::vector<Point> points(8);
+    points[0] = temp->a;
+    points[1] = temp->b;
+    points[2] = temp->c;
+    points[3] = temp->d;
+    points[4] = temp->e;
+    points[5] = temp->f;
+    points[6] = temp->g;
+    points[7] = temp->h;
+    for (int i = 0; i < 7; ++i) {
+        if (points[i] == points[i + 1]) {
+            throw std::logic_error("Some points of octagon are the same");
+        }
     }
-    throw std::logic_error("Octagon isn't equilateral");
+    std::vector<double> sides(8);
+    for (int i = 0; i < 8; ++i) {
+        if (i < 7) {
+            sides[i] = round(Point::Distance(points[i], points[i + 1]) * 1000) / 1000;
+            continue;
+        }
+        sides[i] = round(Point::Distance(points[i], points[0]) * 1000) / 1000;
+    }
+    for (int i = 0; i < 7; ++i) {
+        if (sides[i] != sides[i + 1]) {
+            throw std::logic_error("Octagon isn't equilateral");
+        }
+    }
+    double diam = 2 * sides[0] / sqrt(2 - sqrt(2));
+    double dist;
+    for (int i = 0; i < 4; ++i) {
+        dist = Point::Distance(points[i],points[i + 4]);
+        if (fabs(dist - diam) > EPS) {
+            throw std::logic_error("Octagon angles are not the same");
+        }
+    }
 }
 
 void Octagon::check_points(const Point& a, const Point& b, const Point& c, const Point& d, const Point& e, const Point& f, const Point& g, const Point& h) {
-    if (a == b || a == c || a == d || a == f || 
-    a == f || a == g || a == h || b == c ||
-    b == c || b == d || b == e || b == f ||
-    b == g || b == h || c == d || c == d ||
-    c == e || c == f || c == g || c == h ||
-    d == e || d == f || d == g || g == h ||
-    e == f || e == g || e == h || f == g ||
-    f == h || g == h) {
-        throw std::logic_error("Some points of octagon are the same");
+    std::vector<Point> points(8);
+    points[0] = a;
+    points[1] = b;
+    points[2] = c;
+    points[3] = d;
+    points[4] = e;
+    points[5] = f;
+    points[6] = g;
+    points[7] = h;
+    for (int i = 0; i < 7; ++i) {
+        if (points[i] == points[i + 1]) {
+            throw std::logic_error("Some points of octagon are the same");
+        }
     }
-    double ab = round(Point::Distance(a, b) * 1000) / 1000;
-    double bc = round(Point::Distance(b, c) * 1000) / 1000;
-    double cd = round(Point::Distance(c, d) * 1000) / 1000;
-    double de = round(Point::Distance(d, e) * 1000) / 1000;
-    double ef = round(Point::Distance(e, f) * 1000) / 1000;
-    double fg = round(Point::Distance(f, g) * 1000) / 1000;
-    double gh = round(Point::Distance(g, h) * 1000) / 1000;
-    double ha = round(Point::Distance(h, a) * 1000) / 1000;
-    if (ab == bc && ab == cd && ab == de && ab == ef && ab == fg && ab == gh && ab == ha) {
-        return;
+    std::vector<double> sides(8);
+    for (int i = 0; i < 8; ++i) {
+        if (i < 7) {
+            sides[i] = round(Point::Distance(points[i], points[i + 1]) * 1000) / 1000;
+            continue;
+        }
+        sides[i] = round(Point::Distance(points[i], points[0]) * 1000) / 1000;
     }
-    throw std::logic_error("Octagon isn't equilateral");
+    for (int i = 0; i < 7; ++i) {
+        if (sides[i] != sides[i + 1]) {
+            throw std::logic_error("Octagon isn't equilateral");
+        }
+    }
+    double diam = 2 * sides[0] / sqrt(2 - sqrt(2));
+    double dist;
+    for (int i = 0; i < 4; ++i) {
+        dist = Point::Distance(points[i],points[i + 4]);
+        if (fabs(dist - diam) > EPS) {
+            throw std::logic_error("Octagon angles are not the same");
+        }
+    }
 }
 
 Octagon::Octagon() : Figure("Octagon") {};
@@ -148,6 +177,9 @@ bool Octagon::operator == (const Figure& f) const {
         return false;
     }
     const Octagon* temp = dynamic_cast<const Octagon*>(&f);
+    if (temp == nullptr) {
+        throw std::logic_error("Bad cast");
+    }
     if (this->Area() == temp->Area()) {
         return true;
     }

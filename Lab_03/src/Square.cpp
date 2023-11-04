@@ -2,33 +2,70 @@
 
 void Square::check_constructor(const Figure& f) const {
     const Square* temp = dynamic_cast<const Square*>(&f);
-    if (temp->a == temp->b || temp->a == temp->c || temp->a == temp->d ||
-    temp->b == temp->c || temp->b == temp->d || temp->c == temp->d) {
-        throw std::logic_error("Some points of Square are the same");
+    if (temp == nullptr) {
+        throw std::logic_error("Bad cast");
     }
-    double ab = round(Point::Distance(temp->a, temp->b) * 1000) / 1000;
-    double bc = round(Point::Distance(temp->b, temp->c) * 1000) / 1000;
-    double cd = round(Point::Distance(temp->c, temp->d) * 1000) / 1000;
-    double da = round(Point::Distance(temp->d, temp->a) * 1000) / 1000;
-    if (ab == bc && ab == cd && ab == da) {
-        return;
+    std::vector<Point> points(4);
+    points[0] = temp->a;
+    points[1] = temp->b;
+    points[2] = temp->c;
+    points[3] = temp->d;
+    for (int i = 0; i < 4; ++i) {
+        if (points[i] == points[i + 1]) {
+            throw std::logic_error("Some points of Square are the same");
+        }
     }
-    throw std::logic_error("That's not a square");
+    std::vector<double> sides(4);
+    for (int i = 0; i < 4; ++i) {
+        if (i < 3) {
+            sides[i] = round(Point::Distance(points[i], points[i + 1]) * 1000) / 1000;
+            continue;
+        }
+        sides[i] = round(Point::Distance(points[i], points[0]) * 1000) / 1000;
+    }
+    for (int i = 0; i < 3; ++i) {
+        if (sides[i] != sides[i + 1]) {
+            throw std::logic_error("This square has different sides");
+        }
+    }
+    double ac = round(Point::Distance(points[0], points[2]) * 1000) / 1000;
+    double ab = sides[0];
+    double bc = sides[1];
+    if (ac != round(sqrt(ab * ab + bc * bc) * 1000) / 1000) {
+        throw std::logic_error("The angles of square are not 90 degrees");
+    }
 }
 
 void Square::check_points(const Point& a, const Point& b, const Point& c, const Point& d) {
-    if (a == b || a == c || a == d ||
-    b == c || b == d || c == d) {
-        throw std::logic_error("Some points of Square are the same");
+    std::vector<Point> points(4);
+    points[0] = a;
+    points[1] = b;
+    points[2] = c;
+    points[3] = d;
+    for (int i = 0; i < 4; ++i) {
+        if (points[i] == points[i + 1]) {
+            throw std::logic_error("Some points of Square are the same");
+        }
     }
-    double ab = round(Point::Distance(a, b) * 1000) / 1000;
-    double bc = round(Point::Distance(b, c) * 1000) / 1000;
-    double cd = round(Point::Distance(c, d) * 1000) / 1000;
-    double da = round(Point::Distance(d, a) * 1000) / 1000;
-    if (ab == bc && ab == cd && ab == da) {
-        return;
+    std::vector<double> sides(4);
+    for (int i = 0; i < 4; ++i) {
+        if (i < 3) {
+            sides[i] = round(Point::Distance(points[i], points[i + 1]) * 1000) / 1000;
+            continue;
+        }
+        sides[i] = round(Point::Distance(points[i], points[0]) * 1000) / 1000;
     }
-    throw std::logic_error("That's not a square");
+    for (int i = 0; i < 3; ++i) {
+        if (sides[i] != sides[i + 1]) {
+            throw std::logic_error("This square has different sides");
+        }
+    }
+    double ac = round(Point::Distance(points[0], points[2]) * 1000) / 1000;
+    double ab = sides[0];
+    double bc = sides[1];
+    if (ac != round(sqrt(ab * ab + bc * bc) * 1000) / 1000) {
+        throw std::logic_error("The angles of square are not 90 degrees");
+    }
 }
 
 Square::Square() : Figure("Square") {};
@@ -114,6 +151,9 @@ bool Square::operator == (const Figure& f) const {
         return false;
     }
     const Square* temp = dynamic_cast<const Square*>(&f);
+    if (temp == nullptr) {
+        throw std::logic_error("Bad cast");
+    }
     if (this->Area() == temp->Area()) {
         return true;
     }

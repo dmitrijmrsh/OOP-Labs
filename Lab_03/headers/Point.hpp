@@ -6,6 +6,8 @@
 #include <exception>
 #include <math.h>
 
+#define EPS 0.187
+
 class Point {
     private:
         double x;
