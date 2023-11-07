@@ -6,7 +6,7 @@
 #include <exception>
 #include <math.h>
 
-#define EPS 0.187
+#define EPS 0.01
 
 class Point {
     private:

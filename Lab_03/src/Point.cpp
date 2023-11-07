@@ -28,7 +28,7 @@ bool Point::operator != (const Point& p) const {
 }
 
 bool Point::operator == (const Point& p) const {
-    if (Distance(*this, p) <= 0.01) {
+    if (Distance(*this, p) <= EPS) {
         return true;
     }
     return false;

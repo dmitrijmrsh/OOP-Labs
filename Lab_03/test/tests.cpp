@@ -89,13 +89,13 @@ TEST(Triangle_class, destructor_and_points_constructor) {
 TEST(Triangle_methods, center_method_1) {
     Triangle t(Point(1,sqrt(3)), Point(-1,sqrt(3)), Point(0,2*sqrt(3)));
     Point center = t.Center();
-    ASSERT_TRUE(round(center.get_x_value()* 1000) / 1000 == 0 && round(center.get_y_value() * 1000) / 1000 == 2.309);
+    ASSERT_TRUE(center.get_x_value() <= EPS && center.get_y_value() - 2.309 <= EPS);
 }
 
 TEST(Triangle_methods, center_method_2) {
     Triangle t(Point(0,0), Point(1,sqrt(3)), Point(-1,sqrt(3)));
     Point center = t.Center();
-    ASSERT_TRUE(round(center.get_x_value()* 1000) / 1000 == 0 && round(center.get_y_value() * 1000) / 1000 == 1.155);
+    ASSERT_TRUE(center.get_x_value() <= EPS && center.get_y_value() - 1.155 <= EPS);
 }
 
 TEST(Triangle_methods, area_method_1) {
@@ -162,13 +162,13 @@ TEST(Square_construcors, points_constructor_3) {
 TEST(Square_methods, center_method_1) {
     Square s(Point(-2, -2), Point(-2, 2), Point(2, 2), Point(2, -2));
     Point center = s.Center();
-    ASSERT_TRUE(round(center.get_x_value()*1000)/1000 == 0 && round(center.get_y_value()*1000)/1000 == 0);
+    ASSERT_TRUE(center.get_x_value() <= EPS && center.get_y_value() <= EPS);
 }
 
 TEST(Square_methods, center_method_2) {
     Square s(Point(0,0), Point(0,4), Point(4,4), Point(4,0));
     Point center = s.Center();
-    ASSERT_TRUE(round(center.get_x_value()*1000)/1000 == 2 && round(center.get_y_value()*1000)/1000 == 2);
+    ASSERT_TRUE(center.get_x_value() - 2 <= EPS && center.get_y_value() - 2 <= EPS);
 }
 
 TEST(Square_methods, area_method_1) {
@@ -232,67 +232,67 @@ TEST(Octagon_class, points_constructor_2) {
 }
 
 TEST(Octagon_class, points_constructor_3) {
-    Octagon o(Point(0, -3), Point(2, -2), Point(3, 0), Point(2, 2), Point(0, 3), Point(-2, 2), Point(-3, 0), Point(-2, -2));
+    Octagon o(Point(0, -2 * sqrt(2)), Point(2, -2), Point(2 * sqrt(2), 0), Point(2, 2), Point(0, 2 * sqrt(2)), Point(-2, 2), Point(-2 * sqrt(2), 0), Point(-2, -2));
     o.~Octagon();
 }
 
 TEST(Octagon_class, points_constructor_4) {
-    Octagon o(Point(3, -3), Point(5, -2), Point(6, 0), Point(5, 2), Point(3, 3), Point(1, 2), Point(0, 0), Point(1, -2));
+    Octagon o(Point(3, -2 * sqrt(2)), Point(5, -2), Point(3 + 2 * sqrt(2), 0), Point(5, 2), Point(3, 2 * sqrt(2)), Point(1, 2), Point(3 - 2 * sqrt(2), 0), Point(1, -2));
     o.~Octagon();
 }
 
 TEST(Octagon_methods, center_method_1) {
-    Octagon o(Point(0, -3), Point(2, -2), Point(3, 0), Point(2, 2), Point(0, 3), Point(-2, 2), Point(-3, 0), Point(-2, -2));
+    Octagon o(Point(0, -2 * sqrt(2)), Point(2, -2), Point(2 * sqrt(2), 0), Point(2, 2), Point(0, 2 * sqrt(2)), Point(-2, 2), Point(-2 * sqrt(2), 0), Point(-2, -2));
     Point center = o.Center();
-    ASSERT_TRUE(center.get_x_value() == 0 && center.get_y_value() == 0);
+    ASSERT_TRUE(fabs(center.get_x_value()) <= EPS && fabs(center.get_y_value()) <= EPS);
 }
 
 TEST(Octagon_methods, center_method_2) {
-    Octagon o(Point(3, -3), Point(5, -2), Point(6, 0), Point(5, 2), Point(3, 3), Point(1, 2), Point(0, 0), Point(1, -2));
+    Octagon o(Point(3, -2 * sqrt(2)), Point(5, -2), Point(3 + 2 * sqrt(2), 0), Point(5, 2), Point(3, 2 * sqrt(2)), Point(1, 2), Point(3 - 2 * sqrt(2), 0), Point(1, -2));
     Point center = o.Center();
-    ASSERT_TRUE(center.get_x_value() == 3 && center.get_y_value() == 0);
+    ASSERT_TRUE(fabs(center.get_x_value()) - 3 <= EPS && fabs(center.get_y_value()) <= EPS);
 }
 
 TEST(Octagon_methods, area_method_1) {
-    Octagon o(Point(3, -3), Point(5, -2), Point(6, 0), Point(5, 2), Point(3, 3), Point(1, 2), Point(0, 0), Point(1, -2));
+    Octagon o(Point(3, -2 * sqrt(2)), Point(5, -2), Point(3 + 2 * sqrt(2), 0), Point(5, 2), Point(3, 2 * sqrt(2)), Point(1, 2), Point(3 - 2 * sqrt(2), 0), Point(1, -2));
     double area = o.Area();
     ASSERT_TRUE(area = 24.1421);
 }
 
 TEST(Octagon_methods, area_method_2) {
-    Octagon o(Point(0, -1.5), Point(1, -1), Point(1.5, 0), Point(1, 1), Point(0, 1.5), Point(-1, 1), Point(-1.5, 0), Point(-1, -1));
+    Octagon o(Point(0, -sqrt(2)), Point(1, -1), Point(sqrt(2), 0), Point(1, 1), Point(0, sqrt(2)), Point(-1, 1), Point(-sqrt(2), 0), Point(-1, -1));
     double area = o.Area();
     ASSERT_TRUE(area = 6.03553);
 }
 
 TEST(Octagon_methods, double_cast_method) {
-    Octagon o(Point(0, -1.5), Point(1, -1), Point(1.5, 0), Point(1, 1), Point(0, 1.5), Point(-1, 1), Point(-1.5, 0), Point(-1, -1));
+    Octagon o(Point(0, -sqrt(2)), Point(1, -1), Point(sqrt(2), 0), Point(1, 1), Point(0, sqrt(2)), Point(-1, 1), Point(-sqrt(2), 0), Point(-1, -1));
     double temp = double(o);
     ASSERT_TRUE(temp = 6.03553);
 }
 
 TEST(Octagon_operators, equality_operator) {
-    Octagon o1(Point(0, -1.5), Point(1, -1), Point(1.5, 0), Point(1, 1), Point(0, 1.5), Point(-1, 1), Point(-1.5, 0), Point(-1, -1));
-    Octagon o2(Point(0, -1.5), Point(1, -1), Point(1.5, 0), Point(1, 1), Point(0, 1.5), Point(-1, 1), Point(-1.5, 0), Point(-1, -1));
+    Octagon o1(Point(0, -sqrt(2)), Point(1, -1), Point(sqrt(2), 0), Point(1, 1), Point(0, sqrt(2)), Point(-1, 1), Point(-sqrt(2), 0), Point(-1, -1));
+    Octagon o2(Point(0, -sqrt(2)), Point(1, -1), Point(sqrt(2), 0), Point(1, 1), Point(0, sqrt(2)), Point(-1, 1), Point(-sqrt(2), 0), Point(-1, -1));
     ASSERT_TRUE(o1 == o2);
 }
 
 TEST(Octagon_operators, lvalue_copy_1) {
-    Octagon o(Point(0, -1.5), Point(1, -1), Point(1.5, 0), Point(1, 1), Point(0, 1.5), Point(-1, 1), Point(-1.5, 0), Point(-1, -1));
+    Octagon o(Point(0, -sqrt(2)), Point(1, -1), Point(sqrt(2), 0), Point(1, 1), Point(0, sqrt(2)), Point(-1, 1), Point(-sqrt(2), 0), Point(-1, -1));
     Octagon temp;
     temp = o;
     ASSERT_TRUE(temp == o);
 }
 
 TEST(Octagon_operators, lvalue_copy_2) {
-    Octagon o(Point(0, -1.5), Point(1, -1), Point(1.5, 0), Point(1, 1), Point(0, 1.5), Point(-1, 1), Point(-1.5, 0), Point(-1, -1));
+    Octagon o(Point(0, -sqrt(2)), Point(1, -1), Point(sqrt(2), 0), Point(1, 1), Point(0, sqrt(2)), Point(-1, 1), Point(-sqrt(2), 0), Point(-1, -1));
     Octagon temp;
     o = temp;
     ASSERT_TRUE(temp == o);
 }
 
 TEST(Octagon_operators, rvalue_copy) {
-    Octagon o(Point(0, -1.5), Point(1, -1), Point(1.5, 0), Point(1, 1), Point(0, 1.5), Point(-1, 1), Point(-1.5, 0), Point(-1, -1));
+    Octagon o(Point(0, -sqrt(2)), Point(1, -1), Point(sqrt(2), 0), Point(1, 1), Point(0, sqrt(2)), Point(-1, 1), Point(-sqrt(2), 0), Point(-1, -1));
     Octagon temp;
     Octagon oct;
     oct = o;
@@ -336,7 +336,7 @@ TEST(Array_methods, pop_back_method) {
 TEST(Array_methods, erase_method) {
     Array arr(0);
     Square s1(Point(0,0), Point(0,4), Point(4,4), Point(4,0));
-    Octagon o(Point(0, -1.5), Point(1, -1), Point(1.5, 0), Point(1, 1), Point(0, 1.5), Point(-1, 1), Point(-1.5, 0), Point(-1, -1));
+    Octagon o(Point(0, -sqrt(2)), Point(1, -1), Point(sqrt(2), 0), Point(1, 1), Point(0, sqrt(2)), Point(-1, 1), Point(-sqrt(2), 0), Point(-1, -1));
     Triangle t(Point(1,sqrt(3)), Point(-1,sqrt(3)), Point(0,2*sqrt(3)));
     arr.push_back(&s1);
     arr.push_back(&o);
@@ -348,7 +348,7 @@ TEST(Array_methods, erase_method) {
 TEST(Array_methods, methods_thows_1) {
     Array arr(0);
     Square s1(Point(0,0), Point(0,4), Point(4,4), Point(4,0));
-    Octagon o(Point(0, -1.5), Point(1, -1), Point(1.5, 0), Point(1, 1), Point(0, 1.5), Point(-1, 1), Point(-1.5, 0), Point(-1, -1));
+    Octagon o(Point(0, -sqrt(2)), Point(1, -1), Point(sqrt(2), 0), Point(1, 1), Point(0, sqrt(2)), Point(-1, 1), Point(-sqrt(2), 0), Point(-1, -1));
     Triangle t(Point(1,sqrt(3)), Point(-1,sqrt(3)), Point(0,2*sqrt(3)));
     ASSERT_ANY_THROW(arr.FigureCenter(10));
 }
@@ -356,7 +356,7 @@ TEST(Array_methods, methods_thows_1) {
 TEST(Array_methods, methods_thows_2) {
     Array arr(0);
     Square s1(Point(0,0), Point(0,4), Point(4,4), Point(4,0));
-    Octagon o(Point(0, -1.5), Point(1, -1), Point(1.5, 0), Point(1, 1), Point(0, 1.5), Point(-1, 1), Point(-1.5, 0), Point(-1, -1));
+    Octagon o(Point(0, -sqrt(2)), Point(1, -1), Point(sqrt(2), 0), Point(1, 1), Point(0, sqrt(2)), Point(-1, 1), Point(-sqrt(2), 0), Point(-1, -1));
     Triangle t(Point(1,sqrt(3)), Point(-1,sqrt(3)), Point(0,2*sqrt(3)));
     ASSERT_ANY_THROW(arr.FigureArea(10));
 }
@@ -364,7 +364,7 @@ TEST(Array_methods, methods_thows_2) {
 TEST(Array_methods, methods_throws_3) {
     Array arr(0);
     Square s1(Point(0,0), Point(0,4), Point(4,4), Point(4,0));
-    Octagon o(Point(0, -1.5), Point(1, -1), Point(1.5, 0), Point(1, 1), Point(0, 1.5), Point(-1, 1), Point(-1.5, 0), Point(-1, -1));
+    Octagon o(Point(0, -sqrt(2)), Point(1, -1), Point(sqrt(2), 0), Point(1, 1), Point(0, sqrt(2)), Point(-1, 1), Point(-sqrt(2), 0), Point(-1, -1));
     Triangle t(Point(1,sqrt(3)), Point(-1,sqrt(3)), Point(0,2*sqrt(3)));
     ASSERT_ANY_THROW(arr[10]);
 }

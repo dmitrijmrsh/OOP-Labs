@@ -7,6 +7,8 @@
 
 
 int main() {
+    std::cout.precision(3);
+    std::cout << std::fixed;
     Array arr(0);
     Octagon o;
     Triangle t;
@@ -18,8 +20,8 @@ int main() {
     std::cin >> o;
     arr.push_back(&o);
     std::cout << "Square area: " << s.Area() << " center: " << s.Center() << '\n';
-    std::cout << "Triangle area: " << t.Area() << " center: " << s.Center() << '\n';
-    std::cout << "Octagog area: " << o.Area() << " center: " << s.Center() << '\n';
+    std::cout << "Triangle area: " << t.Area() << " center: " << t.Center() << '\n';
+    std::cout << "Octagon area: " << o.Area() << " center: " << o.Center() << '\n';
     std::cout << '\n';
     std::cout << arr;
     std::cout << "common area: " << arr.CommonArea() << '\n';
