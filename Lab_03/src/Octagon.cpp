@@ -159,6 +159,11 @@ Octagon& Octagon::operator = (const Octagon& o) {
         a = o.a;
         b = o.b;
         c = o.c;
+        d = o.d;
+        e = o.e;
+        f = o.f;
+        g = o.g;
+        h = o.h;
     }
     return *this;
 }
@@ -168,6 +173,11 @@ Octagon& Octagon::operator = (Octagon&& o) {
         a = o.a;
         b = o.b;
         c = o.c;
+        d = o.d;
+        e = o.e;
+        f = o.f;
+        g = o.g;
+        h = o.h;
     }
     return *this;
 }

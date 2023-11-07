@@ -8,7 +8,7 @@
 #include <math.h>
 #include <vector>
 
-#define EPS 0.187
+#define EPS 0.01
 
 template<typename T>
 concept Numeric = std::is_arithmetic_v<T>;
