@@ -302,7 +302,7 @@ TEST(Octagon_operators, rvalue_copy) {
 
 TEST(Array_constructors, default_constructor) {
     Array arr;
-    ASSERT_TRUE(arr.getcapacity() == 0 && arr.getsize() == 0);
+    ASSERT_TRUE(arr.getcapacity() == 2 && arr.getsize() == 0);
 }
 
 TEST(Array_constructors, default_constructor_destructor) {
@@ -350,22 +350,31 @@ TEST(Array_methods, methods_thows_1) {
     Square s1(Point(0,0), Point(0,4), Point(4,4), Point(4,0));
     Octagon o(Point(0, -sqrt(2)), Point(1, -1), Point(sqrt(2), 0), Point(1, 1), Point(0, sqrt(2)), Point(-1, 1), Point(-sqrt(2), 0), Point(-1, -1));
     Triangle t(Point(1,sqrt(3)), Point(-1,sqrt(3)), Point(0,2*sqrt(3)));
+    arr.push_back(&s1);
+    arr.push_back(&o);
+    arr.push_back(&t);
     ASSERT_ANY_THROW(arr.FigureCenter(10));
 }
 
 TEST(Array_methods, methods_thows_2) {
-    Array arr(0);
+    Array arr;
     Square s1(Point(0,0), Point(0,4), Point(4,4), Point(4,0));
     Octagon o(Point(0, -sqrt(2)), Point(1, -1), Point(sqrt(2), 0), Point(1, 1), Point(0, sqrt(2)), Point(-1, 1), Point(-sqrt(2), 0), Point(-1, -1));
     Triangle t(Point(1,sqrt(3)), Point(-1,sqrt(3)), Point(0,2*sqrt(3)));
+    arr.push_back(&s1);
+    arr.push_back(&o);
+    arr.push_back(&t);
     ASSERT_ANY_THROW(arr.FigureArea(10));
 }
 
 TEST(Array_methods, methods_throws_3) {
-    Array arr(0);
+    Array arr;
     Square s1(Point(0,0), Point(0,4), Point(4,4), Point(4,0));
     Octagon o(Point(0, -sqrt(2)), Point(1, -1), Point(sqrt(2), 0), Point(1, 1), Point(0, sqrt(2)), Point(-1, 1), Point(-sqrt(2), 0), Point(-1, -1));
     Triangle t(Point(1,sqrt(3)), Point(-1,sqrt(3)), Point(0,2*sqrt(3)));
+    arr.push_back(&s1);
+    arr.push_back(&o);
+    arr.push_back(&t);
     ASSERT_ANY_THROW(arr[10]);
 }
 

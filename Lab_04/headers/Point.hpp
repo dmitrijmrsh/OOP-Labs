@@ -33,8 +33,14 @@ class Point {
 
         static double Distance(const Point<T>&, const Point<T>&);
 
-        friend std::ostream& operator << (std::ostream& out, const Point<T>& obj);
-        friend std::istream& operator >> (std::istream& in, Point<T>& obj);
+        friend std::ostream& operator << (std::ostream& out, const Point<T>& obj) {
+            out << "x: " << obj.get_x_value() << " y: " << obj.get_y_value();
+            return out;
+        }
+        friend std::istream& operator >> (std::istream& in, Point<T>& obj) {
+            in >> obj.x >> obj.y;
+            return in;
+        }
 
         ~Point() = default;
 };
@@ -87,7 +93,7 @@ bool Point<T>::operator != (const Point<T>& p) const {
 
 template<Numeric T>
 Point<T>& Point<T>::operator = (const Point<T>& other) {
-    if (this != other) {
+    if (this != &other) {
         x = other.x;
         y = other.y;
     }
@@ -96,24 +102,12 @@ Point<T>& Point<T>::operator = (const Point<T>& other) {
 
 template<Numeric T>
 Point<T>& Point<T>::operator = (Point&& other) {
-    if (this != &p) {
-        x = p.x;
-        y = p.y;
+    if (this != &other) {
+        x = other.x;
+        y = other.y;
 
-        p.x = 0;
-        p.y = 0;
+        other.x = 0;
+        other.y = 0;
     }
     return *this;
-}
-
-template<Numeric T>
-std::ostream& operator << (std::ostream& out, const Point<T>& obj) {
-    out << "x: " << obj.get_x_value() << "y: " << obj.get_y_value();
-    return out;
-}
-
-template<Numeric T>
-std::istream& operator >> (std::istream& in, Point<T>& obj) {
-    in >> obj.x >> obj.y;
-    return in;
 }

@@ -1,7 +1,7 @@
 #include "Figure.hpp"
 
 template<Numeric T>
-class Square : public Figure {
+class Square : public Figure<T> {
     private:
         Point<T> a;
         Point<T> b;
@@ -22,6 +22,21 @@ class Square : public Figure {
         Square<T>& operator = (const Square<T>&);
         Square<T>& operator = (Square<T>&&);
         bool operator == (const Figure<T>&) const override;
+        friend std::ostream& operator << (std::ostream& out, Square<T>& s) {
+            out << s.a << '\n';
+            out << s.b << '\n';
+            out << s.c << '\n';
+            out << s.d << '\n';
+            return out;
+        }
+        friend std::istream& operator >> (std::istream& in, Square<T>& s) {
+            in >> s.a;
+            in >> s.b;
+            in >> s.c;
+            in >> s.d;
+            s.check_points(s.a, s.b, s.c, s.d);
+            return in;
+        }
 
         virtual ~Square() = default;
 };
@@ -88,7 +103,7 @@ void Square<T>::check_points(const Point<T>& a, const Point<T>& b, const Point<T
             throw std::logic_error("This square has different sides");
         }
     }
-    double ac = round(Point::Distance(points[0], points[2]) * 1000) / 1000;
+    double ac = round(Point<T>::Distance(points[0], points[2]) * 1000) / 1000;
     double ab = sides[0];
     double bc = sides[1];
     if (ac != round(sqrt(ab * ab + bc * bc) * 1000) / 1000) {
@@ -97,10 +112,10 @@ void Square<T>::check_points(const Point<T>& a, const Point<T>& b, const Point<T
 }
 
 template<Numeric T>
-Square<T>::Square() : Figure("Square") {};
+Square<T>::Square() : Figure<T>("Square") {};
 
 template<Numeric T>
-Square<T>::Square(const Point<T>& a, const Point<T>& b, const Point<T>& c, const Point<T>& d) : Figure("Square") {
+Square<T>::Square(const Point<T>& a, const Point<T>& b, const Point<T>& c, const Point<T>& d) : Figure<T>("Square") {
     this->a = a;
     this->b = b;
     this->c = c;
@@ -109,7 +124,7 @@ Square<T>::Square(const Point<T>& a, const Point<T>& b, const Point<T>& c, const
 }
 
 template<Numeric T>
-Square<T>::Square(const Square<T>& s) : Figure("Square") {
+Square<T>::Square(const Square<T>& s) : Figure<T>("Square") {
     a = s.a;
     b = s.b;
     c = s.c;
@@ -136,24 +151,6 @@ Square<T>::operator double() const {
 }
 
 template<Numeric T>
-std::ostream& operator << (std::ostream& out, Square<T>& s) {
-    out << s.a << '\n';
-    out << s.b << '\n';
-    out << s.c << '\n';
-    out << s.d << '\n';
-    return out;
-}
-
-template<Numeric T>
-std::istream& operator >> (std::istream& in, Square<T>& s) {
-    in >> s.a;
-    in >> s.b;
-    in >> s.c;
-    in >> s.d;
-    return in;
-}
-
-template<Numeric T>
 Square<T>& Square<T>::operator = (const Square<T>& s) {
     if (this != &s) {
         a = s.a;
@@ -165,8 +162,19 @@ Square<T>& Square<T>::operator = (const Square<T>& s) {
 }
 
 template<Numeric T>
+Square<T>& Square<T>::operator = (Square<T>&& s) {
+    if (this != &s) {
+        a = s.a;
+        b = s.b;
+        c = s.c;
+        d = s.d;
+    }
+    return *this;
+}
+
+template<Numeric T>
 bool Square<T>::operator == (const Figure<T>& f) const {
-    if (name != f.getname()) {
+    if (this->getname() != f.getname()) {
         return false;
     }
     const Square<T>* temp = dynamic_cast<const Square<T>*>(&f); 

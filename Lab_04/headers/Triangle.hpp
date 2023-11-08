@@ -1,14 +1,14 @@
 #include "Figure.hpp"
 
 template<Numeric T>
-class Triangle : public Figure {
+class Triangle : public Figure <T> {
     private:
         Point<T> a;
         Point<T> b;
         Point<T> c;
 
         void check_constructor(const Figure<T>&) const override;
-        void check_points(const Point<T>&, const Point<T>&, const Point<T>&) const;
+        void check_points(const Point<T>& a, const Point<T>& b, const Point<T>& c) const;
     public:
         Triangle();
         Triangle(const Point<T>&, const Point<T>&, const Point<T>&);
@@ -21,8 +21,19 @@ class Triangle : public Figure {
         Triangle& operator = (const Triangle<T>&);
         Triangle& operator = (Triangle&&);
         bool operator == (const Figure<T>&) const override;
-        friend std::ostream& operator << (std::ostream& out, Triangle<T>& obj);
-        friend std::istream& operator >> (std::istream& in, Triangle<T>& obj);
+        friend std::ostream& operator << (std::ostream& out, Triangle<T>& t) {
+            out << t.a << '\n';
+            out << t.b << '\n';
+            out << t.c << '\n';
+            return out;
+        }
+        friend std::istream& operator >> (std::istream& in, Triangle<T>& t) {
+            in >> t.a;
+            in >> t.b;
+            in >> t.c;
+            t.check_points(t.a, t.b, t.c);
+            return in;
+        }
 
         virtual ~Triangle() = default;
 };
@@ -84,10 +95,10 @@ void Triangle<T>::check_points(const Point<T>& a, const Point<T>& b, const Point
 }
 
 template<Numeric T>
-Triangle<T>::Triangle() : Figure("Triangle") {};
+Triangle<T>::Triangle() : Figure<T>("Triangle") {};
 
 template<Numeric T>
-Triangle<T>::Triangle(const Point<T>& a, const Point<T>& b, const Point<T>& c) : Figure("Triangle") {
+Triangle<T>::Triangle(const Point<T>& a, const Point<T>& b, const Point<T>& c) : Figure<T>("Triangle") {
     this->a = a;
     this->b = b;
     this->c = c;
@@ -95,7 +106,7 @@ Triangle<T>::Triangle(const Point<T>& a, const Point<T>& b, const Point<T>& c) :
 }
 
 template<Numeric T>
-Triangle<T>::Triangle(const Triangle<T>& t) : Figure("Triangle") {
+Triangle<T>::Triangle(const Triangle<T>& t) : Figure<T>("Triangle") {
     a = t.a;
     b = t.b;
     c = t.c;
@@ -121,23 +132,6 @@ Triangle<T>::operator double() const {
 }
 
 template<Numeric T>
-std::ostream& operator << (std::ostream& out, Triangle<T> obj) {
-    out << obj.a << '\n';
-    out << obj.b << '\n';
-    out << obj.c << '\n';
-    return out;
-}
-
-template<Numeric T>
-std::istream& operator >> (std::istream& in, Triangle<T> obj) {
-    in >> obj.a;
-    in >> obj.b;
-    in >> obj.c;
-    check_points(obj.a, obj.b, obj.c);
-    return in;
-}
-
-template<Numeric T>
 Triangle<T>& Triangle<T>::operator = (const Triangle<T>& t) {
     if (this != &t) {
         a = t.a;
@@ -159,7 +153,7 @@ Triangle<T>& Triangle<T>::operator = (Triangle&& t) {
 
 template<Numeric T>
 bool Triangle<T>::operator == (const Figure<T>& f) const {
-    if (name != f.getname()) {
+    if (this->getname() != f.getname()) {
         return false;
     }
     const Triangle<T>* temp = dynamic_cast<const Triangle<T>*>(&f);

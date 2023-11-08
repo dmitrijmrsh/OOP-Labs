@@ -15,8 +15,8 @@ void Array::reallocate(size_t newcapacity) {
 
 Array::Array() {
     size = 0;
-    capacity = 0;
-    arr = nullptr;
+    capacity = 2;
+    arr = new Figure*[capacity];
 }
 
 Array::Array(size_t _size) {

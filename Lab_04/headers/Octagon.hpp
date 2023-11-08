@@ -1,7 +1,7 @@
 #include "Figure.hpp"
 
 template<Numeric T>
-class Octagon : public Figure {
+class Octagon : public Figure<T> {
     private:
         Point<T> a;
         Point<T> b;
@@ -26,6 +26,29 @@ class Octagon : public Figure {
         Octagon<T>& operator = (const Octagon<T>&);
         Octagon<T>& operator = (Octagon<T>&&);
         bool operator == (const Figure<T>&) const override;
+        friend std::ostream& operator << (std::ostream& out, Octagon<T>& o) {
+            out << o.a << '\n';
+            out << o.b << '\n';
+            out << o.c << '\n';
+            out << o.d << '\n';
+            out << o.e << '\n';
+            out << o.f << '\n';
+            out << o.g << '\n';
+            out << o.h << '\n';
+            return out;
+        }
+        friend std::istream& operator >> (std::istream& in, Octagon<T>& o) {
+            in >> o.a;
+            in >> o.b;
+            in >> o.c;
+            in >> o.d;
+            in >> o.e;
+            in >> o.f;
+            in >> o.g;
+            in >> o.h;
+            o.check_points(o.a, o.b, o.c, o.d, o.e, o.f, o.g, o.h);
+            return in;
+        }
 
         virtual ~Octagon() = default;
 };
@@ -113,10 +136,10 @@ void Octagon<T>::check_points(const Point<T>& a, const Point<T>& b, const Point<
 }
 
 template<Numeric T>
-Octagon<T>::Octagon() : Figure("Octagon") {};
+Octagon<T>::Octagon() : Figure<T>("Octagon") {};
 
 template<Numeric T>
-Octagon<T>::Octagon(const Point<T>& a, const Point<T>& b, const Point<T>& c, const Point<T>& d, const Point<T>& e, const Point<T>& f, const Point<T>& g, const Point<T>& h) : Figure("Octagon") {
+Octagon<T>::Octagon(const Point<T>& a, const Point<T>& b, const Point<T>& c, const Point<T>& d, const Point<T>& e, const Point<T>& f, const Point<T>& g, const Point<T>& h) : Figure<T>("Octagon") {
     this->a = a;
     this->b = b;
     this->c = c;
@@ -129,7 +152,7 @@ Octagon<T>::Octagon(const Point<T>& a, const Point<T>& b, const Point<T>& c, con
 }
 
 template<Numeric T>
-Octagon<T>::Octagon(const Octagon<T>& o) : Figure("Octagon") {
+Octagon<T>::Octagon(const Octagon<T>& o) : Figure<T>("Octagon") {
     a = o.a;
     b = o.b;
     c = o.c;
@@ -157,33 +180,6 @@ double Octagon<T>::Area() const {
 template<Numeric T>
 Octagon<T>::operator double() const {
     return this->Area();
-}
-
-template<Numeric T>
-std::ostream& operator << (std::ostream& out, Octagon<T>& o) {
-    out << o.a << '\n';
-    out << o.b << '\n';
-    out << o.c << '\n';
-    out << o.d << '\n';
-    out << o.e << '\n';
-    out << o.f << '\n';
-    out << o.g << '\n';
-    out << o.h << '\n';
-    return out;
-}
-
-template<Numeric T>
-std::istream& operator >> (std::istream& in, Octagon<T>& o) {
-    in >> o.a;
-    in >> o.b;
-    in >> o.c;
-    in >> o.d;
-    in >> o.e;
-    in >> o.f;
-    in >> o.g;
-    in >> o.h;
-    check_points(o.a, o.b, o.c, o.d, o.e, o.f, o.g, o.h);
-    return in;
 }
 
 template<Numeric T>
@@ -218,7 +214,7 @@ Octagon<T>& Octagon<T>::operator = (Octagon&& o) {
 
 template<Numeric T>
 bool Octagon<T>::operator == (const Figure<T>& f) const {
-    if (name != f.getname()) {
+    if (this->getname() != f.getname()) {
         return false;
     }
     const Octagon<T>* temp = dynamic_cast<const Octagon<T>*>(&f);
