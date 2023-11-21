@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/testing.dir/tests/tests.cpp.o -o testing  /usr/lib/x86_64-linux-gnu/libgtest.a 
