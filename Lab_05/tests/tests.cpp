@@ -32,9 +32,15 @@ TEST(Allocator_tests_throws, allocate_method) {
     ASSERT_ANY_THROW(alloc.allocate(1000000));
 }
 
-TEST(Allocator_tests_throws, deallocate_method) {
+TEST(Allocator_tests_throws, deallocate_method_1) {
     Allocator<std::string, 400> alloc;
     ASSERT_ANY_THROW(alloc.deallocate(nullptr, 100000));
+}
+
+TEST(Allocator_tests_throws, deallocate_method_2) {
+    Allocator<std::string, 400> alloc;
+    std::string* data = alloc.allocate(100);
+    ASSERT_ANY_THROW(alloc.deallocate(data + 1000, 100));
 }
 
 TEST(Iterator_tests, constructor_and_dereference_operator) {

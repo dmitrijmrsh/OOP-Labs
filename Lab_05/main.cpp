@@ -34,10 +34,14 @@ int main() {
         std::cout << *it << std::endl;
     }
 
-    const size_t allocated_blocks = 35000;
+    const size_t allocated_blocks = 20000;
     std::map<int, int, std::less<int>, Allocator<std::pair<const int, int>, allocated_blocks>> test2;
 
-    int count = 1000 + rand() % allocated_blocks;
+    int count = rand() % allocated_blocks;
+    if (count < 1000) {
+        count = 1000;
+    }
+
     int first_value, second_value, erase_value;
     for (int i = 0; i < count; ++i) {
         first_value = rand();

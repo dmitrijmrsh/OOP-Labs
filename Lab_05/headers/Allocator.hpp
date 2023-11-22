@@ -46,7 +46,7 @@ Allocator<T, N>::Allocator() {
 template<class T, size_t N>
 T* Allocator<T, N>::allocate(size_t n) {
     T* result = nullptr;
-
+    
     if (_free_count - int(n) < 0) {
         throw std::invalid_argument("Too much memory to allocate");
     }
@@ -63,6 +63,10 @@ template<class T, size_t N>
 void Allocator<T, N>::deallocate(T* ptr, size_t n) {
     if (_free_count + n > N) {
         throw std::invalid_argument("Too much memory to deallocate");
+    }
+
+    if (ptr < &_used_blocks[0] || ptr > &_used_blocks[0] + N) {
+        throw std::invalid_argument("Allocator doesn't own this pointer");
     }
 
     for (size_t i = 0; i < n; ++i) {
