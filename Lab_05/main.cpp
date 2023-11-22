@@ -1,6 +1,7 @@
 #include <iostream>
 #include <map>
 #include <stdlib.h>
+#include <time.h>
 #include "headers/Vector.hpp"
 
 int Factorial(int value) {
@@ -14,6 +15,8 @@ int Factorial(int value) {
 }
 
 int main() {
+    srand(time(NULL));
+
     std::map<int, int, std::less<int>, Allocator<std::pair<const int, int>, 5000>> test1;
 
     for (int i = 0; i < 10; ++i) {
