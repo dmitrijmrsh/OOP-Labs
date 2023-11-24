@@ -61,13 +61,27 @@ TEST(Iterator_tests, equality_operator) {
     ASSERT_TRUE(vec.begin() == it);
 }
 
-TEST(Iterator_tests, inequality_operator) {
+TEST(Iterator_tests, inequality_operator_1) {
     Vector<int, Allocator<int, 100>> vec; 
     vec.push_back(3);
     vec.push_back(4);
     vec.push_back(5);
     Iterator<int, Vector<int, Allocator<int, 100>>> it(&vec, 0, vec.size());
     ASSERT_FALSE(vec.begin() != it);
+}
+
+TEST(Iterator_tests, inequality_operator_2) {
+    Vector<int, Allocator<int, 100>> vec1; 
+    vec1.push_back(3);
+    vec1.push_back(4);
+    vec1.push_back(5);
+    Vector<int, Allocator<int, 100>> vec2; 
+    vec2.push_back(3);
+    vec2.push_back(4);
+    vec2.push_back(5);
+    Iterator<int, Vector<int, Allocator<int, 100>>> it1(&vec1, 0, vec1.size());
+    Iterator<int, Vector<int, Allocator<int, 100>>> it2(&vec2, 0, vec2.size());
+    ASSERT_TRUE(it1 != it2);
 }
 
 TEST(Iterator_tests, increment_operator) {
@@ -142,13 +156,27 @@ TEST(ConstIterator_tests, equality_operator) {
     ASSERT_TRUE(vec.cbegin() == it);
 }
 
-TEST(ConstIterator_tests, inequality_operator) {
+TEST(ConstIterator_tests, inequality_operator_1) {
     Vector<int, Allocator<int, 100>> vec; 
     vec.push_back(3);
     vec.push_back(4);
     vec.push_back(5);
     ConstIterator<int, Vector<int, Allocator<int, 100>>> it(&vec, 0, vec.size());
     ASSERT_FALSE(vec.cbegin() != it);
+}
+
+TEST(ConstIterator_tests, inequality_operator_2) {
+    Vector<int, Allocator<int, 100>> vec1; 
+    vec1.push_back(3);
+    vec1.push_back(4);
+    vec1.push_back(5);
+    Vector<int, Allocator<int, 100>> vec2; 
+    vec2.push_back(3);
+    vec2.push_back(4);
+    vec2.push_back(5);
+    ConstIterator<int, Vector<int, Allocator<int, 100>>> it1(&vec1, 0, vec1.size());
+    ConstIterator<int, Vector<int, Allocator<int, 100>>> it2(&vec2, 0, vec2.size());
+    ASSERT_FALSE(it1 == it2);
 }
 
 TEST(ConstIterator_tests, increment_operator) {
@@ -290,7 +318,7 @@ TEST(Vector_tests, cbegin_method) {
 TEST(Vector_tests, end_method) {
     Vector<std::string, Allocator<std::string, 200>> vec(3, "testing");
     auto it = vec.end();
-    ASSERT_ANY_THROW(*it);
+    ASSERT_TRUE(*it == "testing");
 }
 
 TEST(Vector_tests, cend_method) {

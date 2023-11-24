@@ -6,6 +6,8 @@ class ConstIterator {
         const ArrayType* array;
         size_t size;
         size_t index;
+
+        const ArrayType* GetArrayPtr() const;
     public:
         ConstIterator() = default;
         ConstIterator(const ArrayType*, size_t, size_t);
@@ -21,6 +23,12 @@ class ConstIterator {
         ~ConstIterator() = default;
 };
 
+
+template<class ItemType, class ArrayType>
+const ArrayType* ConstIterator<ItemType, ArrayType>::GetArrayPtr() const {
+    return array;
+}
+
 template<class ItemType, class ArrayType>
 ConstIterator<ItemType, ArrayType>::ConstIterator(const ArrayType* array, size_t index, size_t size) {
     this->array = array;
@@ -30,20 +38,23 @@ ConstIterator<ItemType, ArrayType>::ConstIterator(const ArrayType* array, size_t
 
 template<class ItemType, class ArrayType>
 const ItemType& ConstIterator<ItemType, ArrayType>::operator * () {
-    if (index >= size) {
+    if (index > size) {
         std::invalid_argument("Iterator is out of bounds");
+    }
+    if (index == size) {
+        return (*array)[index - 1];
     }
     return (*array)[index];
 }
 
 template<class ItemType, class ArrayType>
 bool ConstIterator<ItemType, ArrayType>::operator == (const ConstIterator<ItemType, ArrayType>& other) const {
-    return (index == other.index);
+    return (index == other.index && this->GetArrayPtr() == other.GetArrayPtr());
 }
 
 template<class ItemType, class ArrayType>
 bool ConstIterator<ItemType, ArrayType>::operator != (const ConstIterator<ItemType, ArrayType>& other) const {
-    return (index != other.index);
+    return (index != other.index || this->GetArrayPtr() != other.GetArrayPtr());
 }
 
 template<class ItemType, class ArrayType>

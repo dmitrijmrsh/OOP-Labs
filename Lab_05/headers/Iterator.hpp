@@ -6,6 +6,8 @@ class Iterator {
         ArrayType* array;
         size_t size;
         size_t index;
+
+        ArrayType* GetArrayPtr() const;
     public:
         Iterator() = default;
         Iterator(ArrayType*, size_t, size_t);
@@ -21,6 +23,11 @@ class Iterator {
         ~Iterator() = default;
 };
 
+template<class ItemType, class ArrayType>
+ArrayType* Iterator<ItemType, ArrayType>::GetArrayPtr() const {
+    return array;
+}
+
 
 template<class ItemType, class ArrayType>
 Iterator<ItemType, ArrayType>::Iterator(ArrayType* array, size_t index, size_t size) {
@@ -31,20 +38,23 @@ Iterator<ItemType, ArrayType>::Iterator(ArrayType* array, size_t index, size_t s
 
 template<class ItemType, class ArrayType>
 ItemType& Iterator<ItemType, ArrayType>::operator * () {
-    if (index >= size) {
-        throw std::invalid_argument("Iterator is out of bounds");\
+    if (index > size) {
+        throw std::invalid_argument("Iterator is out of bounds");
+    }
+    if (index == size) {
+        return (*array)[index - 1];
     }
     return (*array)[index];
 }
 
 template<class ItemType, class ArrayType>
 bool Iterator<ItemType, ArrayType>::operator == (const Iterator<ItemType, ArrayType>& other) const {
-    return (index == other.index);
+    return (index == other.index && this->GetArrayPtr() == other.GetArrayPtr());
 }
 
 template<class ItemType, class ArrayType>
 bool Iterator<ItemType, ArrayType>::operator != (const Iterator<ItemType, ArrayType>& other) const {
-    return (index != other.index);
+    return (index != other.index || this->GetArrayPtr() != other.GetArrayPtr());
 }
 
 template<class ItemType, class ArrayType>
