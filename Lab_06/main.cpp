@@ -54,6 +54,8 @@ int main() {
     std::cout << "Loading..." << std::endl;
     array = DataMethods::load_array("npc.txt");
 
+    std::cout << array;
+
     std::cout << "Fighting..." << std::endl << array;
     for (size_t distance = 20; distance <= 500 && !array.empty(); distance += 80) {
         auto dead_list = fight(array, distance);

@@ -9,5 +9,4 @@
 class Factory {
     public:
         static std::shared_ptr<NPC> Create(const NpcType& type, int x, int y);
-        static std::shared_ptr<NPC> Create(std::istream& in);
 };
