@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/main.dir/main.cpp.o CMakeFiles/main.dir/src/NPC.cpp.o CMakeFiles/main.dir/src/Druid.cpp.o CMakeFiles/main.dir/src/Orc.cpp.o CMakeFiles/main.dir/src/Slaver.cpp.o CMakeFiles/main.dir/src/Factory.cpp.o CMakeFiles/main.dir/src/Observers.cpp.o CMakeFiles/main.dir/src/DataMethods.cpp.o CMakeFiles/main.dir/src/FightManager.cpp.o -o main 
