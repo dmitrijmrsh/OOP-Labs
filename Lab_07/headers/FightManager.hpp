@@ -5,7 +5,7 @@
 #include "Orc.hpp"
 #include "Slaver.hpp"
 
-inline const int MAX_TIME = 20;
+inline const int MAX_TIME = 30;
 
 inline int timer = 0;
 
